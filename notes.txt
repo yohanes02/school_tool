@@ -1,0 +1,23 @@
+Table Submission Status
+0 = Menunggu Persetujuan KAPROG
+1 = Menunggu Persetujuan KABID
+2 = Menunggu Persetujuan KEPSEK
+3 = Disetujui
+4 = Ditolak
+
+Table Submission History Status
+0 = Menunggu Validasi
+1 = Ditolak KAPROG
+2 = Disetujui KAPROG
+3 = Ditolak KABID
+4 = Disetujui KABID
+5 = Ditolak KEPSEK
+6 = Disetujui KEPSEK
+7 = Selesai
+
+User Tipe
+1 = TOOLMAN
+2 = KAPROG
+3 = KABID
+4 = KEPSEK
+5 = SISWA
