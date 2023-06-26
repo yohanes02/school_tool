@@ -61,6 +61,10 @@
 								<div class="col-lg-2">
 									<input class="form-control bg-body-secondary" name="itemtotal<?= $i ?>" id="itemtotal<?= $i ?>" type="number" placeholder="Total Harga" value="<?= $submission_item_data[$i]['total'] ?>" disabled>
 								</div>
+								<label class="offset-1 mt-3 mb-1" for="">Foto Barang</label>
+								<div class="col-lg-10 offset-1">
+									<img src="<?=base_url()?>assets/uploads/<?=$submission_item_data[$i]['image']?>" alt="" srcset="" height="80">
+								</div>
 								<div class="col-lg-10 offset-1 mt-3 mb-3">
 									<textarea name="itemspecification<?= $i ?>" id="itemspecification<?= $i ?>" cols="30" rows="3" class="form-control" placeholder="Spesifikasi" disabled><?= $submission_item_data[$i]['specification'] ?></textarea>
 								</div>

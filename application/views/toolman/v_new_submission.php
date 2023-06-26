@@ -3,7 +3,7 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="card-title">Pengajuan Pembelian Barang</div>
-				<form action="<?= base_url() ?>toolman/submitSubmission" method="POST">
+				<form action="<?= base_url() ?>toolman/submitSubmission" method="POST" enctype="multipart/form-data">
 					<div class="col-12 mb-3">
 						<label for="" class="form-label">Judul Pengajuan</label>
 						<div class="col-lg-11">
@@ -62,6 +62,10 @@
 							</div>
 							<div class="col-lg-1">
 								<button class="btn btn-danger" onclick="deleteElement('itemnew0')">Hapus</button>
+							</div>
+							<label class="offset-1 mt-3 mb-1" for="">Foto Barang</label>
+							<div class="col-lg-10 offset-1">
+								<input type="file" class="form-control" accept="image/*" name="itemimage0">
 							</div>
 							<div class="col-lg-10 offset-1 mt-3 mb-3">
 								<textarea name="itemspecification0" id="itemspecification0" cols="30" rows="3" class="form-control" placeholder="Spesifikasi"></textarea>

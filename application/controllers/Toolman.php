@@ -8,6 +8,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property Toolman_m Toolman_m
  * @property Core_m Core_m
  * @property db db
+ * @property config config
+ * @property upload upload
  */
 
 class Toolman extends CI_Controller
@@ -139,7 +141,7 @@ class Toolman extends CI_Controller
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
 
-		$borrowingDataDetail = $this->Toolman_m->getHistoryBorrow($this->session->userdata('major'), null, null)->result_array();
+		$borrowingDataDetail = $this->Toolman_m->getHistoryBorrow2($this->session->userdata('major'), null, null)->result_array();
 
 		$data['user'] = $userData;
 		$data['borrowingData'] = $borrowingDataDetail;
@@ -150,7 +152,8 @@ class Toolman extends CI_Controller
 		$this->load->view("component/v_bottom");
 	}
 
-	public function newBorrow() {
+	public function newBorrow()
+	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
 		$studentDataDetail = $this->Toolman_m->getStudentByMajor($this->session->userdata('major'))->result_array();
@@ -174,6 +177,13 @@ class Toolman extends CI_Controller
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
 
 		$borrowDataDetail = $this->Toolman_m->getDetailBorrow($id)->row_array();
+		$borrowDataDetail['toolDatas'] = [];
+		$tools = explode(",", $borrowDataDetail['tool_id']);
+
+		for ($i = 0; $i < count($tools); $i++) {
+			$toolData = $this->Core_m->getById($tools[$i], 'tool')->row_array();
+			array_push($borrowDataDetail['toolDatas'], $toolData);
+		}
 
 		$data['user'] = $userData;
 		$data['borrowData'] = $borrowDataDetail;
@@ -184,43 +194,88 @@ class Toolman extends CI_Controller
 		$this->load->view("component/v_bottom");
 	}
 
-	public function insertBorrow($id)
+	public function insertBorrow()
 	{
 		$post = $this->input->post();
-		$itemLeftCurrent = $post['itemleftavailable'] - $post['qtyborrow'];
-		$this->Core_m->updateData($id, array('available' => $itemLeftCurrent), 'tool');
+
+		$toolIds = [];
+		$quantityItems = [];
+
+		for ($i = 0; $i <= (int) $post['itemnewborrowcount']; $i++) {
+			$validName = isset($post['itemborrowname' . $i]) && $post['itemborrowname' . $i] != null && $post['itemborrowname' . $i] != "";
+			$validCount = isset($post['itemborrowcount' . $i]) && $post['itemborrowcount' . $i] != null && $post['itemborrowcount' . $i] != "" && $post['itemborrowcount' . $i] != 0;
+			if ($validName && $validCount) {
+				array_push($toolIds, $post['itemborrowname' . $i]);
+				array_push($quantityItems, $post['itemborrowcount' . $i]);
+			}
+		}
+
+		for ($i = 0; $i < count($toolIds); $i++) {
+			$toolData = $this->Core_m->getById($toolIds[$i], 'tool')->row_array();
+			$itemLeftCurrent = $toolData['available'] - $quantityItems[$i];
+			$this->Core_m->updateData($toolIds[$i], array('available' => $itemLeftCurrent), 'tool');
+		}
+		// $itemLeftCurrent = $post['itemleftavailable'] - $post['qtyborrow'];
+		// $this->Core_m->updateData($id, array('available' => $itemLeftCurrent), 'tool');
 
 		$ins = array(
-			'tool_id' => $id,
+			'tool_id' => implode(',', $toolIds),
 			'borrower_type' => $post['typeborrower'],
 			'student_nisn' => $post['idborrower'],
 			'major' => $this->session->userdata('major'),
-			'quantity' => $post['qtyborrow'],
+			'quantity' => implode(',', $quantityItems),
 			// 'image_borrow' => $post['available'],
 			'time_borrow' => date('Y-m-d H:i:s'),
 			'information' => $post['infoborrow'],
 			'status' => $post['statusborrow'],
-			'information' => $post['infoborrow'],
 		);
 
 		$this->Core_m->insertData($ins, 'tool_history_transaction');
-		redirect('toolman/detailitem/' . $id);
+		redirect('toolman/inOutPage');
 	}
 
 	public function updateReturn($id)
 	{
 		$post = $this->input->post();
-		$itemLeftCurrent = $post['itemleftavailable'] + $post['qtyborrow'];
-		$this->Core_m->updateData($post['itemid'], array('available' => $itemLeftCurrent), 'tool');
 
-		$ins = array(
-			"status" => $post['statusborrow'],
-			"information" => $post['infoborrow'],
-			"time_return" => date('Y-m-d H:i:s')
-		);
+		if ($post['statusborrow'] == "1") {
+			$ins = array(
+				"information" => $post['infoborrow']
+			);
 
-		$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
-		redirect('toolman/detailBorrow/' . $id);
+			$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
+			redirect('toolman/detailBorrow/' . $id);
+		} else {
+			$toolIds = [];
+			$quantityItems = [];
+
+			for ($i = 0; $i <= (int) $post['itemnewborrowcount']; $i++) {
+				$validName = isset($post['itemborrowname' . $i]) && $post['itemborrowname' . $i] != null && $post['itemborrowname' . $i] != "";
+				$validCount = isset($post['itemborrowcount' . $i]) && $post['itemborrowcount' . $i] != null && $post['itemborrowcount' . $i] != "" && $post['itemborrowcount' . $i] != 0;
+				if ($validName && $validCount) {
+					array_push($toolIds, $post['itemborrowname' . $i]);
+					array_push($quantityItems, $post['itemborrowcount' . $i]);
+				}
+			}
+
+			for ($i = 0; $i < count($toolIds); $i++) {
+				$toolData = $this->Core_m->getById($toolIds[$i], 'tool')->row_array();
+				$itemLeftCurrent = $toolData['available'] + $quantityItems[$i];
+				$this->Core_m->updateData($toolIds[$i], array('available' => $itemLeftCurrent), 'tool');
+			}
+
+			// $itemLeftCurrent = $post['itemleftavailable'] + $post['qtyborrow'];
+			// $this->Core_m->updateData($post['itemid'], array('available' => $itemLeftCurrent), 'tool');
+
+			$ins = array(
+				"status" => $post['statusborrow'],
+				"information" => $post['infoborrow'],
+				"time_return" => date('Y-m-d H:i:s')
+			);
+
+			$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
+			redirect('toolman/inOutPage');
+		}
 	}
 
 	public function submission()
@@ -264,13 +319,14 @@ class Toolman extends CI_Controller
 		$this->load->view("component/v_bottom", $jsFile);
 	}
 
-	public function detailHistorySubmission($id) {
+	public function detailHistorySubmission($id)
+	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
 
 		$submissionHistoryData = $this->Core_m->getById($id, 'submission_history')->row_array();
 		$submissionData = $this->Toolman_m->getDataSubmissioById($submissionHistoryData['submission_id'])->row_array();
-		
+
 		$data['user'] = $userData;
 		$data['submission_data'] = $submissionData;
 		$data['submission_item_data'] = json_decode($submissionHistoryData['submission_data'], true);
@@ -316,11 +372,19 @@ class Toolman extends CI_Controller
 					$totalItemFilled = $post['itemtotal' . $i] != null && $post['itemtotal' . $i] != "";
 					$dataFullyFilled = $nameItemFilled && $qtyItemFilled && $pieceItemFilled && $totalItemFilled;
 					if (isset($post['itemname' . $i]) && $dataFullyFilled) {
+						$photo = "";
+						if($_FILES["itemimage".$i]['name'] != null && $_FILES["itemimage".$i]['name'] != "") {
+							$fileUploaded = $this->ups("itemimage".$i);
+							if($fileUploaded) {
+								$photo = $_FILES["itemimage".$i]['name'];
+							}
+						}
 						$totalPriceSubmission += $post['itemtotal' . $i];
 						$arrInside['title'] = $post['itemname' . $i];
 						$arrInside['qty'] = $post['itemqty' . $i];
 						$arrInside['piece'] = $post['itemsatuan' . $i];
 						$arrInside['total'] = $post['itemtotal' . $i];
+						$arrInside['image'] = $photo;
 						$arrInside['specification'] = $post['itemspecification' . $i];
 						array_push($arr, $arrInside);
 					}
@@ -386,12 +450,66 @@ class Toolman extends CI_Controller
 		redirect("toolman/submission");
 	}
 
-	public function getToolData() {
+	public function getToolData()
+	{
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
 		if ($toolData == null) {
 			echo json_encode("NO DATA");
 		} else {
 			echo json_encode($toolData);
 		}
+	}
+
+	public function uploadImage()
+	{
+		print_r($_FILES);
+		echo "<br/>";
+		if (count($_FILES) != 0) {
+			$files = array_keys($_FILES);
+			$idx = 0;
+			foreach ($files as $file) {
+				if ($_FILES["img$idx"]['name'] != null && $_FILES["img$idx"]['name'] != '') {
+					$fileUploaded = $this->ups($file);
+
+					if (!$fileUploaded) {
+						$resp['status'] = "NOK";
+						$resp['description'] = "Error in upload file";
+
+						echo json_encode($resp);
+						return;
+					} else {
+						array_push($photos, str_replace(' ', '_', $_FILES["img$idx"]['name']));
+					}
+				}
+				$idx++;
+			}
+		}
+	}
+
+
+	private function ups($input)
+	{
+		echo $input."\n";
+		$temp = $_FILES[$input]['tmp_name'];
+
+		$config['upload_path']		= $this->config->item('dirUploads');
+		$config['allowed_types']	= 'gif|jpg|jpeg|png|csv|xls|doc|docx|xlsx|gif';
+		$config['max_size']			= 10240;
+		$config['overwrite'] 		= TRUE;
+
+		$this->upload->initialize($config);
+		if (!$this->upload->do_upload($input)) {
+		echo "error - ".$input."\n";
+		return false;
+		}
+
+		$filesize = getimagesize($temp);
+		if ($filesize != null || $filesize != array()) {
+			if ($filesize[0] > 2000 || $filesize[1] > 2000) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

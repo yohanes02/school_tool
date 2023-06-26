@@ -188,6 +188,20 @@ function generateInputItem() {
 	buttonDelete.innerHTML = "Hapus";
 	divColDelete.append(buttonDelete);
 
+	var labelImage = document.createElement("label");
+	labelImage.classList.add("offset-1", "mt-3", "mb-1");
+	labelImage.innerHTML = "Foto Barang";
+
+	var divColItemImage = document.createElement("div");
+	divColItemImage.classList.add("col-lg-10", "offset-1");
+	var inputItemImage = document.createElement("input");
+	inputItemImage.classList.add("form-control")
+	inputItemImage.setAttribute("type", "file");
+	inputItemImage.setAttribute("accept", "image/*");
+	inputItemImage.setAttribute("type", "file");
+	inputItemImage.setAttribute("name", "itemimage"+increment);
+	divColItemImage.append(inputItemImage);
+
 	var divColItemSpecification = document.createElement("div");
 	divColItemSpecification.classList.add("col-lg-10", "offset-1", "mt-3", "mb-3");
 	var textareaItemSpecification = document.createElement("textarea");
@@ -211,6 +225,8 @@ function generateInputItem() {
 	divRowItem.append(divColItemSatuan);
 	divRowItem.append(divColItemTotal);
 	divRowItem.append(divColDelete);
+	divRowItem.append(labelImage);
+	divRowItem.append(divColItemImage);
 	divRowItem.append(divColItemSpecification);
 
 	parentElement.append(divRowItem);
@@ -304,5 +320,10 @@ function formatRupiah(allSum) {
 	}
 
 	return formatRp;
-}	
+}
+
+function changeImage(id) {
+	$("#itemimagediv"+id).hide();
+	$("#itemimagechange"+id).show();
+}
 

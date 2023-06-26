@@ -39,7 +39,7 @@ class Student extends CI_Controller
 		$userData = $this->Core_m->getByNisn($this->session->userdata('nisn'), 'student')->row_array();
 		$userData['user_type_name'] = 'Student';
 
-		$borrowingDataDetail = $this->Student_m->getHistoryBorrow($userData['major'], $userData['nisn'])->result_array();
+		$borrowingDataDetail = $this->Student_m->getHistoryBorrow2($userData['major'], $userData['nisn'])->result_array();
 		
 		$data['user'] = $userData;
 		$data['borrowingData'] = $borrowingDataDetail;
@@ -71,6 +71,13 @@ class Student extends CI_Controller
 		$userData['user_type_name'] = 'Student';
 
 		$borrowDataDetail = $this->Student_m->getDetailBorrow($id)->row_array();
+		$borrowDataDetail['toolDatas'] = [];
+		$tools = explode(",", $borrowDataDetail['tool_id']);
+
+		for ($i=0; $i < count($tools); $i++) { 
+			$toolData = $this->Core_m->getById($tools[$i], 'tool')->row_array();
+			array_push($borrowDataDetail['toolDatas'], $toolData);
+		}
 
 		$data['user'] = $userData;
 		$data['borrowData'] = $borrowDataDetail;

@@ -18,11 +18,10 @@
 						<thead>
 							<tr>
 								<th>No</th>
-								<th>Kode Barang</th>
-								<th>Nama Barang</th>
 								<th>Nama Peminjam</th>
+								<th>Tingkat</th>
 								<th>Tipe Peminjam</th>
-								<th>Qty</th>
+								<th>Tanggal Peminjaman</th>
 								<th>Status</th>
 								<th>Action</th>
 							</tr>
@@ -32,9 +31,8 @@
 							foreach ($borrowingData as $dt) : ?>
 								<tr style="vertical-align: middle;">
 									<td><?= $no ?></td>
-									<td><?= $dt['tool_code'] ?></td>
-									<td><?= $dt['tool_name'] ?></td>
 									<td><?= $dt['first_name'] ?> <?= $dt['last_name'] ?></td>
+									<td><?= $dt['grade'] ?></td>
 									<td>
 										<?php
 										if ($dt['borrower_type'] == 1) echo 'Individual';
@@ -42,7 +40,7 @@
 										if ($dt['borrower_type'] == 3) echo 'Kelas';
 										?>
 									</td>
-									<td><?= $dt['quantity'] ?></td>
+									<td><?= $dt['time_borrow'] ?></td>
 									<td>
 										<?php
 										if ($dt['status'] == 1) echo 'Sedang Dipinjam';
