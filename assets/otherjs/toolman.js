@@ -19,6 +19,26 @@ $("document").ready(function () {
 	obj.init();
 });
 
+function checkItemIsExist(id, idx) {
+	console.log(document.getElementById(id).checked);
+	var itemExisting = document.getElementById(id).checked;
+	if(itemExisting) {
+		$("#itemexisting"+idx).show();
+		$("#itemgroup"+idx).hide();
+		$("#itemname"+idx).val($("#itemexisting"+idx).find(":selected").text());
+		$("#itemname"+idx).prop('readonly', true);
+	} else {
+		$("#itemexisting"+idx).hide();
+		$("#itemgroup"+idx).show();
+		$("#itemname"+idx).val("");
+		$("#itemname"+idx).prop('readonly', false);
+	}
+}
+
+function getSelectedItemExisting(idx) {
+	$("#itemname"+idx).val($("#itemexisting"+idx).find(":selected").text());
+}
+
 function generateInputBorrow() {
 	$.ajax({
 		type: "post",

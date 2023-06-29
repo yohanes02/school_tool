@@ -48,7 +48,33 @@
 							<div class="col-lg-1">
 								<input class="form-control text-center" id="itemnumber0" type="text" value="1" disabled>
 							</div>
-							<div class="col-lg-5">
+							<div class="col-lg-11">
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" id="itemexist0" onchange="checkItemIsExist('itemexist0', 0)">
+									<label class="form-check-label" for="itemexist0">Barang yang sudah ada ?</label>
+								</div>
+							</div>
+							<div class="offset-1 col-lg-10" id="itemgroup0">
+								<div class="form-floating mb-2">
+									<select name="itemgroup0" class="form-select">
+										<?php foreach ($item_master as $dt) : ?>
+											<option value="<?=$dt['tool_code']?>"><?=$dt['tool_group']?></option>
+										<?php endforeach; ?>
+									</select>
+									<label for="itemSelect">Tool Group</label>
+								</div>
+							</div>
+							<div class="offset-1 col-lg-10" id="itemexisting0" style="display: none;">
+								<div class="form-floating mb-2">
+									<select name="itemexisting0" class="form-select" onchange="getSelectedItemExisting(0)">
+										<?php $i = 0; foreach ($tool_data as $dt) : ?>
+											<option value="<?=$dt['id']?>" <?php if($i == 0) echo "selected"; ?>><?=$dt['tool_name']?></option>
+										<?php $i++; endforeach; ?>
+									</select>
+									<label for="itemSelect">Tool Item</label>
+								</div>
+							</div>
+							<div class="offset-1 col-lg-5">
 								<input class="form-control" name="itemname0" id="itemname0" type="text" placeholder="Nama Barang">
 							</div>
 							<div class="col-lg-1">

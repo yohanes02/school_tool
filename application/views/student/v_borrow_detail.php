@@ -4,23 +4,25 @@
 			<div class="card-body">
 				<div class="card-title">Form Peminjaman / Pengembalian Barang</div>
 				<div>
-					<form action="<?=base_url()?>toolman/updateReturn/<?=$borrowData['id']?>" method="post">
-						<input type="number" name="itemleftavailable" value="<?=$borrowData['available']?>" style="display: none;">
-						<input type="number" name="itemid" value="<?=$borrowData['tool_id']?>" style="display: none;">
+					<form action="<?= base_url() ?>toolman/updateReturn/<?= $borrowData['id'] ?>" method="post">
+						<input type="number" name="itemleftavailable" value="<?= $borrowData['available'] ?>" style="display: none;">
+						<input type="number" name="itemid" value="<?= $borrowData['tool_id'] ?>" style="display: none;">
 						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Nama Peminjam</label>
+							<label for="" class="col-lg-2 col-form-label">Kode</label>
 							<div class="col-lg-10">
-								<input class="form-control" name="nameborrower" type="text" value="<?=$borrowData['first_name']?> <?=$borrowData['last_name']?> - <?=$borrowData['grade']?>" disabled>
+									<input class="form-control" type="text" value="<?=$borrowData['code_borrow']?>" disabled>
 							</div>
 						</div>
 						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Tipe Peminjam</label>
 							<div class="col-lg-10">
-								<select name="typeborrower" id="borrower-type-select" class="form-select" style="background-color: #e9ecef;" disabled>
-									<option value="1" <?php if($borrowData['borrower_type'] == '1') echo 'selected' ?>>Individual</option>
-									<option value="2" <?php if($borrowData['borrower_type'] == '2') echo 'selected' ?>>Kelompok</option>
-									<option value="3" <?php if($borrowData['borrower_type'] == '3') echo 'selected' ?>>Kelas</option>
-								</select>
+								<?php if ($borrowData['borrower_type'] == "1") : ?>
+									<input class="form-control" type="text" value="Individual" disabled>
+								<?php elseif ($borrowData['borrow_accepted'] == "2") : ?>
+									<input class="form-control" type="text" value="Kelompok" disabled>
+								<?php elseif ($borrowData['borrow_accepted'] == "3") : ?>
+									<input class="form-control" type="text" value="Kelas" disabled>
+								<?php endif; ?>
 							</div>
 						</div>
 						<div class="col-12 mb-3">
@@ -35,7 +37,7 @@
 								<div class="mb-3">
 									<div class="row">
 										<div class="col-lg-1">
-											<input class="form-control text-center" type="text" value="<?= $i ?>" disabled>
+											<input class="form-control text-center" type="text" value="<?= $i + 1 ?>" disabled>
 										</div>
 										<div class="col-lg-9">
 											<input class="form-control" type="text" value="<?= $borrowData['toolDatas'][$i]['tool_name'] ?>" disabled>
@@ -50,28 +52,42 @@
 						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Status</label>
 							<div class="col-lg-10">
-								<select name="statusborrow" id="statusborrow" class="form-select" disabled>
-									<option value="1" <?php if($borrowData['status'] == '1') echo 'selected' ?>>Sedang Dipinjam</option>
-									<option value="2" <?php if($borrowData['status'] == '2') echo 'selected' ?>>Selesai Dipinjam</option>
-								</select>
+								<?php if ($borrowData['borrow_accepted'] == "0" && $borrowData['status'] == "0") : ?>
+									<input class="form-control" type="text" value="Menunggu Konfirmasi" disabled>
+								<?php elseif ($borrowData['borrow_accepted'] == "1" && $borrowData['status'] == "0") : ?>
+									<input class="form-control" type="text" value="Peminjaman Disetujui" disabled>
+								<?php elseif ($borrowData['borrow_accepted'] == "2" && $borrowData['status'] == "0") : ?>
+									<input class="form-control" type="text" value="Peminjaman Ditolak" disabled>
+								<?php elseif ($borrowData['status'] == "1") : ?>
+									<input class="form-control" type="text" value="Sedang Dipinjam" disabled>
+								<?php elseif ($borrowData['status'] == "2") : ?>
+									<input class="form-control" type="text" value="Selesai Dipinjam" disabled>
+								<?php endif; ?>
+
 							</div>
 						</div>
 						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Keterangan</label>
+							<label for="" class="col-lg-2 col-form-label">Keterangan Siswa</label>
 							<div class="col-lg-10">
-								<textarea class="form-control" name="infoborrow" id="" cols="30" rows="6" disabled><?=$borrowData['information']?></textarea>
+								<textarea class="form-control" name="infoborrow" id="" cols="30" rows="6" disabled><?= $borrowData['information_student'] ?></textarea>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="" class="col-lg-2 col-form-label">Keterangan Toolman</label>
+							<div class="col-lg-10">
+								<textarea class="form-control" name="infoborrow" id="" cols="30" rows="6" disabled><?= $borrowData['information_toolman'] ?></textarea>
 							</div>
 						</div>
 						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Waktu Peminjaman</label>
 							<div class="col-lg-10">
-								<input class="form-control" name="qtyborrow" type="text" value="<?=$borrowData['time_borrow']?>" disabled>
+								<input class="form-control" name="qtyborrow" type="text" value="<?= $borrowData['time_borrow'] ?>" disabled>
 							</div>
 						</div>
 						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Waktu Pengembalian</label>
 							<div class="col-lg-10">
-								<input class="form-control" name="qtyborrow" type="text" value="<?=$borrowData['time_return']?>" disabled>
+								<input class="form-control" name="qtyborrow" type="text" value="<?= $borrowData['time_return'] ?>" disabled>
 							</div>
 						</div>
 					</form>

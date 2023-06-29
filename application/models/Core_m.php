@@ -48,13 +48,16 @@ class Core_m extends CI_Model
 		return $this->db->affected_rows();
 	}
 
-	public function getToolByMajor($major) {
+	public function getToolByMajor($major)
+	{
 		$this->db->where(['major' => $major]);
 		return $this->db->get('tool');
 	}
 
-	public function getDataSubmission($major_id) {
+	public function getDataSubmission($major_id)
+	{
 		$this->db->where(['major_id' => $major_id]);
+		$this->db->order_by('id', 'desc');
 		return $this->db->get('submission');
 	}
 }

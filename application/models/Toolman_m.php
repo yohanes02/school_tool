@@ -59,7 +59,7 @@ class Toolman_m extends CI_Model
 	}
 
 	public function getHistoryBorrow2($major_id) {
-		$query = "select tht.*, s.first_name, s.last_name, s.grade from tool_history_transaction tht left join student s on s.nisn = tht.student_nisn";
+		$query = "select tht.*, s.first_name, s.last_name, s.grade from tool_history_transaction tht left join student s on s.nisn = tht.student_nisn order by tht.id desc";
 
 		return $this->db->query($query);
 	}

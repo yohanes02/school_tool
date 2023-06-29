@@ -14,7 +14,7 @@ class Student_m extends CI_Model
 	}
 
 	public function getHistoryBorrow2($major_id, $user_nisn) {
-		$query = "select tht.*, s.first_name, s.last_name from tool_history_transaction tht left join student s on s.nisn = tht.student_nisn where tht.student_nisn = $user_nisn";
+		$query = "select tht.*, s.first_name, s.last_name from tool_history_transaction tht left join student s on s.nisn = tht.student_nisn where tht.student_nisn = $user_nisn order by tht.id desc";
 
 		return $this->db->query($query);
 	}

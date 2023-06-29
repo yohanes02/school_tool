@@ -15,9 +15,33 @@ Table Submission History Status
 6 = Disetujui KEPSEK
 7 = Selesai
 
+Table Tool History Transaction
+	Status
+	0 = -
+	1 = Sedang Dipinjam
+	2 = Selesai Dipinjam
+
+	Borrow Accepted
+	0 = Menunggu Konfirmasi
+	1 = Disetujui
+	2 = Ditolak
+
 User Tipe
 1 = TOOLMAN
 2 = KAPROG
 3 = KABID
 4 = KEPSEK
 5 = SISWA
+
+{
+  "title": "B1",
+  "qty": "12",
+  "piece": "140000",
+  "total": "1680000",
+  "image": "",
+  "specification": "",
+  "existingItem": 0 / 1,
+  "groupItemId": 1,
+  "itemId": 1,
+  "isInserted": 0
+}

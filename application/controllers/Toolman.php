@@ -278,6 +278,74 @@ class Toolman extends CI_Controller
 		}
 	}
 
+	public function updateBorrowStatus($id)
+	{
+		$post = $this->input->post();
+
+		// print_r($post);
+		// die;
+
+		if ($post['statusborrow'] == "1") {
+			$ins = array(
+				"status" => $post['statusborrow'],
+				"information_toolman" => $post['infoborrowtoolman'],
+				"time_borrow" => date('Y-m-d H:i:s')
+			);
+
+			$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
+			redirect('toolman/detailBorrow/' . $id);
+		} else {
+			$dataBorrow = $this->Core_m->getById($id, 'tool_history_transaction')->row_array();
+			$toolIds = explode(",", $dataBorrow['tool_id']);
+			$quantityItems = explode(",", $dataBorrow['quantity']);
+
+			for ($i = 0; $i < count($toolIds); $i++) {
+				$toolData = $this->Core_m->getById($toolIds[$i], 'tool')->row_array();
+				$itemLeftCurrent = $toolData['available'] + $quantityItems[$i];
+				$this->Core_m->updateData($toolIds[$i], array('available' => $itemLeftCurrent), 'tool');
+			}
+
+			$ins = array(
+				"status" => $post['statusborrow'],
+				"information_toolman" => $post['infoborrowtoolman'],
+				"time_return" => date('Y-m-d H:i:s')
+			);
+
+			$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
+			redirect('toolman/inOutPage');
+		}
+	}
+
+	public function acceptBorrow($id)
+	{
+		$ins = array(
+			"borrow_accepted" => 1,
+		);
+		$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
+		redirect('toolman/detailBorrow/' . $id);
+	}
+
+	public function rejectBorrow($id)
+	{
+		$dataBorrow = $this->Core_m->getById($id, 'tool_history_transaction')->row_array();
+
+		$ins = array(
+			"borrow_accepted" => 2,
+		);
+
+		$toolIds = explode(",", $dataBorrow['tool_id']);
+		$quantityItems = explode(",", $dataBorrow['quantity']);
+
+		for ($i = 0; $i < count($toolIds); $i++) {
+			$toolData = $this->Core_m->getById($toolIds[$i], 'tool')->row_array();
+			$itemLeftCurrent = $toolData['available'] + $quantityItems[$i];
+			$this->Core_m->updateData($toolIds[$i], array('available' => $itemLeftCurrent), 'tool');
+		}
+
+		$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
+		redirect('toolman/detailBorrow/' . $id);
+	}
+
 	public function submission()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
@@ -344,7 +412,12 @@ class Toolman extends CI_Controller
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
 
+		$itemMaster = $this->Core_m->getAll('tool_unique')->result_array();
+		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
+
 		$data['user'] = $userData;
+		$data['item_master'] = $itemMaster;
+		$data['tool_data'] = $toolData;
 
 		$jsFile['page'] = 'toolman';
 		$this->load->view("component/v_top");
@@ -373,10 +446,10 @@ class Toolman extends CI_Controller
 					$dataFullyFilled = $nameItemFilled && $qtyItemFilled && $pieceItemFilled && $totalItemFilled;
 					if (isset($post['itemname' . $i]) && $dataFullyFilled) {
 						$photo = "";
-						if($_FILES["itemimage".$i]['name'] != null && $_FILES["itemimage".$i]['name'] != "") {
-							$fileUploaded = $this->ups("itemimage".$i);
-							if($fileUploaded) {
-								$photo = $_FILES["itemimage".$i]['name'];
+						if ($_FILES["itemimage" . $i]['name'] != null && $_FILES["itemimage" . $i]['name'] != "") {
+							$fileUploaded = $this->ups("itemimage" . $i);
+							if ($fileUploaded) {
+								$photo = $_FILES["itemimage" . $i]['name'];
 							}
 						}
 						$totalPriceSubmission += $post['itemtotal' . $i];
@@ -489,7 +562,7 @@ class Toolman extends CI_Controller
 
 	private function ups($input)
 	{
-		echo $input."\n";
+		echo $input . "\n";
 		$temp = $_FILES[$input]['tmp_name'];
 
 		$config['upload_path']		= $this->config->item('dirUploads');
@@ -499,8 +572,8 @@ class Toolman extends CI_Controller
 
 		$this->upload->initialize($config);
 		if (!$this->upload->do_upload($input)) {
-		echo "error - ".$input."\n";
-		return false;
+			echo "error - " . $input . "\n";
+			return false;
 		}
 
 		$filesize = getimagesize($temp);

@@ -18,10 +18,10 @@
 						<thead>
 							<tr>
 								<th>No</th>
+								<th>Kode</th>
 								<th>Nama Peminjam</th>
 								<th>Tingkat</th>
-								<th>Tipe Peminjam</th>
-								<th>Tanggal Peminjaman</th>
+								<!-- <th>Tipe Peminjam</th> -->
 								<th>Status</th>
 								<th>Action</th>
 							</tr>
@@ -31,21 +31,21 @@
 							foreach ($borrowingData as $dt) : ?>
 								<tr style="vertical-align: middle;">
 									<td><?= $no ?></td>
+									<td><?= $dt['code_borrow'] ?></td>
 									<td><?= $dt['first_name'] ?> <?= $dt['last_name'] ?></td>
 									<td><?= $dt['grade'] ?></td>
 									<td>
-										<?php
-										if ($dt['borrower_type'] == 1) echo 'Individual';
-										if ($dt['borrower_type'] == 2) echo 'Kelompok';
-										if ($dt['borrower_type'] == 3) echo 'Kelas';
-										?>
-									</td>
-									<td><?= $dt['time_borrow'] ?></td>
-									<td>
-										<?php
-										if ($dt['status'] == 1) echo 'Sedang Dipinjam';
-										if ($dt['status'] == 2) echo 'Selesai Dipinjam';
-										?>
+										<?php if ($dt['borrow_accepted'] == "0" && $dt['status'] == "0") : ?>
+											Menunggu Konfirmasi
+										<?php elseif ($dt['borrow_accepted'] == "1" && $dt['status'] == "0") : ?>
+											Peminjaman Disetujui
+										<?php elseif ($dt['borrow_accepted'] == "2" && $dt['status'] == "0") : ?>
+											Peminjaman Ditolak
+										<?php elseif ($dt['status'] == "1") : ?>
+											Sedang Dipinjam
+										<?php elseif ($dt['status'] == "2") : ?>
+											Selesai Dipinjam
+										<?php endif; ?>
 									</td>
 									<td>
 										<div>

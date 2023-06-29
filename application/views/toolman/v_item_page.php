@@ -10,8 +10,6 @@
 								<div class="row">
 									<div class="col-lg-3">
 										<div class="form-floating mb-2">
-											<!-- <input type="text" class="form-control" id="floatingInput" placeholder="groupcode" name="groupcode">
-											<label for="floatingInput">Tool Code</label> -->
 											<select name="toolcode" id="itemSelect" class="form-select">
 												<?php foreach ($item_master as $dt) : ?>
 													<option value="<?=$dt['tool_code']?>"><?=$dt['tool_group']?></option>
