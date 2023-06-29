@@ -77,7 +77,7 @@ class Toolman extends CI_Controller
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
 
-		$itemMaster = $this->Core_m->getAll('tool_unique')->result_array();
+		$itemMaster = $this->Core_m->getToolUniqueByMajor($this->session->userdata('major'))->result_array();
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
 
 		$data['user'] = $userData;
@@ -370,11 +370,17 @@ class Toolman extends CI_Controller
 		$submissionData = $this->Toolman_m->getDataSubmissioById($id)->row_array();
 		$submissionHistoryData = $this->Toolman_m->getSubmissionHistoryBySubmissionId($submissionData['id'])->result_array();
 
+		$itemMaster = $this->Core_m->getAll('tool_unique')->result_array();
+		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
+
+
 		// for ($i=0; $i < count($submissionHistoryData); $i++) { 
 		// 	$submissionHistoryData[$i]['decoded_submission_data'] = json_decode($submissionHistoryData[$i]['submission_data'], true);
 		// }
 
 		$data['user'] = $userData;
+		$data['item_master'] = $itemMaster;
+		$data['tool_data'] = $toolData;
 		$data['submission_data'] = $submissionData;
 		$data['submission_history'] = $submissionHistoryData;
 		$data['submission_item_data'] = json_decode($submissionHistoryData[0]['submission_data'], true);
@@ -398,6 +404,8 @@ class Toolman extends CI_Controller
 		$data['user'] = $userData;
 		$data['submission_data'] = $submissionData;
 		$data['submission_item_data'] = json_decode($submissionHistoryData['submission_data'], true);
+		$data['submission_history_status'] = $submissionHistoryData['status'];
+		$data['submission_history_id'] = $submissionHistoryData['id'];
 
 		$jsFile['page'] = 'toolman';
 		$this->load->view("component/v_top");
@@ -459,12 +467,21 @@ class Toolman extends CI_Controller
 						$arrInside['total'] = $post['itemtotal' . $i];
 						$arrInside['image'] = $photo;
 						$arrInside['specification'] = $post['itemspecification' . $i];
+						if (isset($post['itemexist' . $i])) {
+							$arrInside['existingItem'] = 1;
+							$arrInside['groupItemId'] = 0;
+							$arrInside['itemId'] = $post['itemexisting' . $i];
+						} else {
+							$arrInside['existingItem'] = 0;
+							$arrInside['groupItemId'] = $post['itemgroup' . $i];
+							$arrInside['itemId'] = 0;
+						};
+						$arrInside['isInserted'] = 0;
 						array_push($arr, $arrInside);
 					}
 				}
 			}
 		}
-
 
 		if (isset($post['submissionid']) && $post['submissionid'] != null && $post['submissionid'] != "") {
 			$data = array(
@@ -523,6 +540,71 @@ class Toolman extends CI_Controller
 		redirect("toolman/submission");
 	}
 
+	public function submissionItemArrived($id)
+	{
+		$data = array("status" => 5);
+
+		$this->Core_m->updateData($id, $data, 'submission');
+		redirect('toolman/detailSubmission/' . $id);
+	}
+
+	public function insertItemToItemList($id)
+	{
+		$submissionHistoryData = $this->Core_m->getById($id, 'submission_history')->row_array();
+		$items = json_decode($submissionHistoryData['submission_data'], true);
+
+		$post = $this->input->post();
+
+		for ($i = 0; $i < count($items); $i++) {
+			if (isset($post['iteminsert' . $i])) {
+				$existingItem = false;
+				if ($items[$i]['existingItem'] == "1") {
+					$existingItem = true;
+				}
+
+				if ($existingItem) {
+					$itemId = $items[$i]['itemId'];
+					$getItemData = $this->Core_m->getById($itemId, 'tool')->row_array();
+					$updatedQty = (int) $items[$i]['qty'] + (int) $getItemData['quantity'];
+					$updatedAvailable = (int) $items[$i]['qty'] + (int) $getItemData['available'];
+
+					$updateData = array(
+						"quantity" => $updatedQty,
+						"available" => $updatedAvailable,
+					);
+
+					$this->Core_m->updateData($getItemData['id'], $updateData, 'tool');
+
+					$items[$i]['isInserted'] = "1";
+				} else {
+					$groupItemId = $items[$i]['groupItemId'];
+					$getGroupData = $this->Core_m->getById($groupItemId, 'tool_unique')->row_array();
+					$lastIncrement = $getGroupData['last_increment'] + 1; // Increment for unique
+					$toolCode = $getGroupData['tool_code'] . "" . $lastIncrement;
+
+					$ins = array(
+						'tool_code' => $toolCode,
+						'tool_name' => $items[$i]['title'],
+						'major' => $getGroupData['major'],
+						'quantity' => $items[$i]['qty'],
+						'available' => $items[$i]['qty'],
+						'broken' => 0
+					);
+
+					$this->Core_m->insertData($ins, 'tool');
+					$this->Core_m->updateData($getGroupData['id'], array('last_increment' => $lastIncrement), 'tool_unique');
+
+					$items[$i]['isInserted'] = "1";
+				}
+			}
+		}
+
+		$updateItemsData = array("submission_data" => json_encode($items));
+		$this->Core_m->updateData($id, $updateItemsData, 'submission_history');
+
+		redirect('toolman/detailHistorySubmission/'.$id);
+	}
+
 	public function getToolData()
 	{
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
@@ -530,6 +612,22 @@ class Toolman extends CI_Controller
 			echo json_encode("NO DATA");
 		} else {
 			echo json_encode($toolData);
+		}
+	}
+
+	public function getToolDataAndToolGroup()
+	{
+		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
+		$toolGroup = $this->Core_m->getToolUniqueByMajor($this->session->userdata('major'))->result_array();
+
+		$data = array(
+			"tool_data" => $toolData,
+			"tool_group" => $toolGroup,
+		);
+		if ($toolData == null || $toolGroup == null) {
+			echo json_encode("NO DATA");
+		} else {
+			echo json_encode($data);
 		}
 	}
 

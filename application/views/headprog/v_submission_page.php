@@ -28,9 +28,11 @@
 										<?php if ($dt['status'] == "1") echo "Menunggu Persetujuan KABID"; ?>
 										<?php if ($dt['status'] == "2") echo "Menunggu Persetujuan KEPSEK"; ?>
 										<?php if ($dt['status'] == "3") echo "Disetujui"; ?>
+										<?php if ($dt['status'] == "4") echo "Pengajuan Terakhir Ditolak"; ?>
+										<?php if ($dt['status'] == "5") echo "Barang Sudah Sampai"; ?>
 									</td>
 									<td>
-										<a href="<?= base_url() ?>headprog/detailSubmission/<?=$dt['id']?>">
+										<a href="<?= base_url() ?>headprog/detailSubmission/<?= $dt['id'] ?>">
 											<div class='d-grid'>
 												<button class="btn btn-success" onclick=""> Lihat Detail </button>
 											</div>

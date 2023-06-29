@@ -50,7 +50,7 @@
 							</div>
 							<div class="col-lg-11">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" id="itemexist0" onchange="checkItemIsExist('itemexist0', 0)">
+									<input class="form-check-input" type="checkbox" id="itemexist0" name="itemexist0" onchange="checkItemIsExist('itemexist0', 0)">
 									<label class="form-check-label" for="itemexist0">Barang yang sudah ada ?</label>
 								</div>
 							</div>
@@ -58,7 +58,7 @@
 								<div class="form-floating mb-2">
 									<select name="itemgroup0" class="form-select">
 										<?php foreach ($item_master as $dt) : ?>
-											<option value="<?=$dt['tool_code']?>"><?=$dt['tool_group']?></option>
+											<option value="<?=$dt['id']?>"><?=$dt['tool_group']?></option>
 										<?php endforeach; ?>
 									</select>
 									<label for="itemSelect">Tool Group</label>
@@ -68,7 +68,7 @@
 								<div class="form-floating mb-2">
 									<select name="itemexisting0" class="form-select" onchange="getSelectedItemExisting(0)">
 										<?php $i = 0; foreach ($tool_data as $dt) : ?>
-											<option value="<?=$dt['id']?>" <?php if($i == 0) echo "selected"; ?>><?=$dt['tool_name']?></option>
+											<option value="<?=$dt['id']?>"><?=$dt['tool_name']?></option>
 										<?php $i++; endforeach; ?>
 									</select>
 									<label for="itemSelect">Tool Item</label>

@@ -43,6 +43,8 @@
 													<?php if ($dt['status'] == "1") echo "Menunggu Persetujuan KABID"; ?>
 													<?php if ($dt['status'] == "2") echo "Menunggu Persetujuan KEPSEK"; ?>
 													<?php if ($dt['status'] == "3") echo "Disetujui"; ?>
+													<?php if ($dt['status'] == "4") echo "Pengajuan Terakhir Ditolak"; ?>
+													<?php if ($dt['status'] == "5") echo "Barang Sudah Sampai"; ?>
 												</td>
 												<td>
 													<a href="<?= base_url() ?>headdiv/detailSubmission/<?= $dt['id'] ?>">

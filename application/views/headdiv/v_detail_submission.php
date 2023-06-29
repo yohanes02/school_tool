@@ -51,6 +51,7 @@
 							<?php if ($submission_data['status'] == "2") echo "Menunggu Persetujuan KEPSEK"; ?>
 							<?php if ($submission_data['status'] == "3") echo "Disetujui"; ?>
 							<?php if ($submission_data['status'] == "4") echo "Pengajuan Terakhir Ditolak"; ?>
+							<?php if ($submission_data['status'] == "5") echo "Barang Sudah Sampai"; ?>
 						</div>
 					</div>
 				</div>

@@ -48,6 +48,12 @@ class Core_m extends CI_Model
 		return $this->db->affected_rows();
 	}
 
+	public function getToolUniqueByMajor($major)
+	{
+		$this->db->where(['major' => $major]);
+		return $this->db->get('tool_unique');
+	}
+	
 	public function getToolByMajor($major)
 	{
 		$this->db->where(['major' => $major]);

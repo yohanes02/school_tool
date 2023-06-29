@@ -50,8 +50,20 @@
 							<?php if ($submission_data['status'] == "1") echo "Menunggu Persetujuan KABID"; ?>
 							<?php if ($submission_data['status'] == "2") echo "Menunggu Persetujuan KEPSEK"; ?>
 							<?php if ($submission_data['status'] == "3") echo "Disetujui"; ?>
+							<?php if ($submission_data['status'] == "4") echo "Pengajuan Ditolak (Input Kembali)"; ?>
+							<?php if ($submission_data['status'] == "5") echo "Barang Sudah Sampai"; ?>
 						</div>
 					</div>
+					<?php if ($submission_data['status'] == "3") : ?>
+						<div class="col-12 mb-3 p-3 bg-body-secondary">
+							<h5 for="" class="form-label text-center">Barang Sudah Sampai ?</h5>
+							<a href="<?= base_url() ?>toolman/submissionItemArrived/<?= $submission_data['id'] ?>">
+								<div class="d-grid">
+									<button type="button" class="btn btn-success">Sudah Sampai</button>
+								</div>
+							</a>
+						</div>
+					<?php endif; ?>
 				</div>
 				<div class="table-responsive">
 					<table class="table">
@@ -103,12 +115,6 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-12 mb-3">
-							<label for="" class="form-label">Catatan Untuk Revisi</label>
-							<div class="col-lg-12">
-								<textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>
-							</div>
-						</div>
 						<form action="<?= base_url() ?>toolman/submitSubmission" method="POST">
 							<input type="hidden" value="<?= $submission_data['id'] ?>" name="submissionid" id="submissionid">
 							<input type="hidden" value="<?= $submission_data['submission_revision'] ?>" name="submissionrev" id="submissionrev">
@@ -128,7 +134,11 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-12 mb-3" id="parentmonthsubmission">
+							<div class="col-12 mb-3" id="parentmonthsubmission" style="display: <?php if ($submission_data['submission_type'] == '1') {
+																															echo "block";
+																														} else {
+																															echo "none";
+																														} ?>">
 								<label for="" class="form-label">Pengajuan Bulan</label>
 								<div class="col-lg-12">
 									<select name="monthsubmission" id="monthsubmission" class="form-select">
@@ -157,7 +167,46 @@
 										<div class="col-lg-1">
 											<input class="form-control text-center" id="itemnumber<?= $i ?>" type="text" value="<?= $i + 1 ?>" disabled>
 										</div>
-										<div class="col-lg-5">
+										<div class="col-lg-11">
+											<div class="form-check form-switch">
+												<input class="form-check-input" type="checkbox" id="itemexist<?= $i ?>" name="itemexist<?= $i ?>" onchange="checkItemIsExist('itemexist<?= $i ?>', <?= $i ?>)" <?php if ($submission_item_data[$i]['existingItem'] == "1") echo "checked"; ?>>
+												<label class="form-check-label" for="itemexist<?= $i ?>">Barang yang sudah ada ?</label>
+											</div>
+										</div>
+										<?php
+										$showToolGroup = "none";
+										$showToolItem = "none";
+										if ($submission_item_data[$i]['existingItem'] == "1") {
+											$showToolItem = "block";
+											$showToolGroup = "none";
+										} else {
+											$showToolItem = "none";
+											$showToolGroup = "block";
+										}
+										?>
+										<div class="offset-1 col-lg-10" id="itemgroup<?= $i ?>" style="display: <?= $showToolGroup ?>;">
+											<div class="form-floating mb-2">
+												<select name="itemgroup<?= $i ?>" class="form-select">
+													<?php foreach ($item_master as $dt) : ?>
+														<option value="<?= $dt['id'] ?>" <?php if ($submission_item_data[$i]['groupItemId'] == $dt['id']) echo "selected"; ?>><?= $dt['tool_group'] ?></option>
+													<?php endforeach; ?>
+												</select>
+												<label for="itemSelect">Tool Group</label>
+											</div>
+										</div>
+										<div class="offset-1 col-lg-10" id="itemexisting<?= $i ?>" style="display: <?= $showToolItem ?>;">
+											<div class="form-floating mb-2">
+												<select name="itemexisting<?= $i ?>" class="form-select" onchange="getSelectedItemExisting(<?= $i ?>)">
+													<?php $j = 0;
+													foreach ($tool_data as $dt) : ?>
+														<option value="<?= $dt['id'] ?>" <?php if ($submission_item_data[$i]['itemId'] == $dt['id']) echo "selected"; ?>><?= $dt['tool_name'] ?></option>
+													<?php $j++;
+													endforeach; ?>
+												</select>
+												<label for="itemSelect">Tool Item</label>
+											</div>
+										</div>
+										<div class="offset-1 col-lg-5">
 											<input class="form-control" name="itemname<?= $i ?>" id="itemname<?= $i ?>" type="text" placeholder="Nama Barang" value="<?= $submission_item_data[$i]['title'] ?>">
 										</div>
 										<div class="col-lg-1">

@@ -4,6 +4,7 @@ Table Submission Status
 2 = Menunggu Persetujuan KEPSEK
 3 = Disetujui
 4 = Ditolak
+5 = Barang Sampai
 
 Table Submission History Status
 0 = Menunggu Validasi

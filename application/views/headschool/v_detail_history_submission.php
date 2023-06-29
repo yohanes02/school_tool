@@ -49,7 +49,13 @@
 								<div class="col-lg-1">
 									<input class="form-control text-center" id="itemnumber<?= $i ?>" type="text" value="<?= $i + 1 ?>" disabled>
 								</div>
-								<div class="col-lg-5">
+								<div class="col-lg-11 mb-2">
+									<?php $text = "Menambah Stok Barang"; if($submission_item_data[$i]['existingItem'] == "0") {
+										$text = "Barang Baru";
+									} ?>
+									Status : <?= $text ?>
+								</div>
+								<div class="offset-1 col-lg-5">
 									<input class="form-control" name="itemname<?= $i ?>" id="itemname<?= $i ?>" type="text" placeholder="Nama Barang" value="<?= $submission_item_data[$i]['title'] ?>" disabled>
 								</div>
 								<div class="col-lg-1">

@@ -39,6 +39,7 @@
 										<?php if ($dt['status'] == "2") echo "Menunggu Persetujuan KEPSEK"; ?>
 										<?php if ($dt['status'] == "3") echo "Pengajuan Disetujui"; ?>
 										<?php if ($dt['status'] == "4") echo "Pengajuan Ditolak (Input Kembali)"; ?>
+										<?php if ($dt['status'] == "5") echo "Barang Sudah Sampai"; ?>
 									</td>
 									<td>
 										<a href="<?= base_url() ?>toolman/detailSubmission/<?=$dt['id']?>">
