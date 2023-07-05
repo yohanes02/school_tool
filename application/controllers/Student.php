@@ -23,8 +23,11 @@ class Student extends CI_Controller
 	public function index()
 	{
 		$userData = $this->Core_m->getByNisn($this->session->userdata('nisn'), 'student')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = 'Student';
-
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+		
 		$toolData = $this->Core_m->getToolByMajor($userData['major'])->result_array();
 
 		$data['user'] = $userData;
@@ -39,7 +42,10 @@ class Student extends CI_Controller
 	public function inOutPage()
 	{
 		$userData = $this->Core_m->getByNisn($this->session->userdata('nisn'), 'student')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = 'Student';
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$borrowingDataDetail = $this->Student_m->getHistoryBorrow2($userData['major'], $userData['nisn'])->result_array();
 
@@ -55,7 +61,10 @@ class Student extends CI_Controller
 	public function detailItem($id)
 	{
 		$userData = $this->Core_m->getByNisn($this->session->userdata('nisn'), 'student')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = 'Student';
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$toolDataDetail = $this->Core_m->getById($id, 'tool')->row_array();
 
@@ -72,7 +81,10 @@ class Student extends CI_Controller
 	public function detailBorrow($id)
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'student')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = 'Student';
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$borrowDataDetail = $this->Student_m->getDetailBorrow($id)->row_array();
 		$borrowDataDetail['toolDatas'] = [];
@@ -95,7 +107,11 @@ class Student extends CI_Controller
 	public function newBorrow()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'student')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = 'Student';
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+		
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
 
 		$data['user'] = $userData;

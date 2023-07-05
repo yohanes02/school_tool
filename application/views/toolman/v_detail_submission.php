@@ -121,13 +121,13 @@
 							<div class="col-12 mb-3">
 								<label for="" class="form-label">Judul Pengajuan</label>
 								<div class="col-lg-12">
-									<input class="form-control" name="titlesubmission" type="text" value="<?= $submission_data['submission_title'] ?>">
+									<input class="form-control" name="titlesubmission" type="text" value="<?= $submission_data['submission_title'] ?>" required>
 								</div>
 							</div>
 							<div class="col-12 mb-3">
 								<label for="" class="form-label">Tipe Pengajuan</label>
 								<div class="col-lg-12">
-									<select name="typesubmission" id="typesubmission" class="form-select">
+									<select name="typesubmission" id="typesubmission" class="form-select" required>
 										<option disabled>Pilih Tipe Pengajuan</option>
 										<option <?php if ($submission_data['submission_type'] == '1') echo 'selected'; ?> value="1">Bulanan</option>
 										<option <?php if ($submission_data['submission_type'] == '2') echo 'selected'; ?> value="2">Random</option>
@@ -142,6 +142,8 @@
 								<label for="" class="form-label">Pengajuan Bulan</label>
 								<div class="col-lg-12">
 									<select name="monthsubmission" id="monthsubmission" class="form-select">
+										<option <?php if ($submission_data['month'] == '') echo 'selected'; ?> disabled>Select Month</option>
+										<option <?php if ($submission_data['month'] == '1') echo 'selected'; ?> value="1">Januari</option>
 										<option <?php if ($submission_data['month'] == '1') echo 'selected'; ?> value="1">Januari</option>
 										<option <?php if ($submission_data['month'] == '2') echo 'selected'; ?> value="2">Februari</option>
 										<option <?php if ($submission_data['month'] == '3') echo 'selected'; ?> value="3">Maret</option>
@@ -207,13 +209,13 @@
 											</div>
 										</div>
 										<div class="offset-1 col-lg-5">
-											<input class="form-control" name="itemname<?= $i ?>" id="itemname<?= $i ?>" type="text" placeholder="Nama Barang" value="<?= $submission_item_data[$i]['title'] ?>">
+											<input class="form-control" name="itemname<?= $i ?>" id="itemname<?= $i ?>" type="text" placeholder="Nama Barang" value="<?= $submission_item_data[$i]['title'] ?>" required>
 										</div>
 										<div class="col-lg-1">
-											<input class="form-control" name="itemqty<?= $i ?>" id="itemqty<?= $i ?>" type="number" placeholder="Qty" onchange="generateTotal(<?= $i ?>)" value="<?= $submission_item_data[$i]['qty'] ?>">
+											<input class="form-control" name="itemqty<?= $i ?>" id="itemqty<?= $i ?>" type="number" placeholder="Qty" onchange="generateTotal(<?= $i ?>)" value="<?= $submission_item_data[$i]['qty'] ?>" required>
 										</div>
 										<div class="col-lg-2">
-											<input class="form-control" name="itemsatuan<?= $i ?>" id="itemsatuan<?= $i ?>" type="number" placeholder="Harga Satuan" onchange="generateTotal(<?= $i ?>)" value="<?= $submission_item_data[$i]['piece'] ?>">
+											<input class="form-control" name="itemsatuan<?= $i ?>" id="itemsatuan<?= $i ?>" type="number" placeholder="Harga Satuan" onchange="generateTotal(<?= $i ?>)" value="<?= $submission_item_data[$i]['piece'] ?>" required>
 										</div>
 										<div class="col-lg-2">
 											<input class="form-control bg-body-secondary" name="itemtotal<?= $i ?>" id="itemtotal<?= $i ?>" type="number" placeholder="Total Harga" value="<?= $submission_item_data[$i]['total'] ?>" readonly>
@@ -232,7 +234,7 @@
 								<?php endfor; ?>
 							</div>
 							<div class="col-lg-3 mt-3 mb-5">
-								<button class="btn btn-info" type="button" onclick="generateInputItem()">
+								<button class="btn btn-info" type="button" onclick="generateInputItem(true)">
 									<i class="bi bi-plus-circle-dotted"></i>
 									Tambah Barang
 								</button>

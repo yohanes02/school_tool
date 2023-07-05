@@ -3,16 +3,6 @@
 		<div class="card">
 			<div class="card-body table-border-style">
 				<div class="card-title">Peminjaman Barang</div>
-				<div class="row">
-					<div class="col-lg-3 mb-3">
-						<a href="<?= base_url() ?>toolman/newBorrow">
-							<button class="btn btn-info">
-								<i class="bi bi-plus-circle-dotted"></i>
-								Tambah Peminjaman Barang
-							</button>
-						</a>
-					</div>
-				</div>
 				<div class="table-responsive">
 					<table class="table datatable table-striped">
 						<thead>

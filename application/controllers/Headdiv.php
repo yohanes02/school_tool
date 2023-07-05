@@ -139,7 +139,7 @@ class Headdiv extends CI_Controller
 			"last_update" => date('Y-m-d H:i:s'),
 		);
 		$this->Core_m->updateData($submission_id, $data, 'submission');
-		redirect("headprog/detailSubmission/".$submission_id);
+		redirect("headdiv/detailSubmission/".$submission_id);
 	}
 
 	public function rejectSubmission($history_id_submission_id)
@@ -156,7 +156,7 @@ class Headdiv extends CI_Controller
 			"last_update" => date('Y-m-d H:i:s'),
 		);
 		$this->Core_m->updateData($submission_id, $data, 'submission');
-		redirect("headprog/detailSubmission/".$submission_id);
+		redirect("headdiv/detailSubmission/".$submission_id);
 	}
 
 

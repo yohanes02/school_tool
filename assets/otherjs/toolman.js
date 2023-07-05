@@ -133,10 +133,14 @@ function deleteElementBorrow(id) {
 	rebuildNumberBorrow();
 }
 
-function generateInputItem() {
+function generateInputItem(fromRevision) {
+	var url = 'getToolDataAndToolGroup';
+	if(fromRevision) {
+		url = '../getToolDataAndToolGroup';
+	}
 	$.ajax({
 		type: "post",
-		url: "getToolDataAndToolGroup",
+		url: url,
 		dataType: "JSON",
 		traditional: true,
 		success: function (resp) {
@@ -239,6 +243,7 @@ function generateInputItem() {
 			inputItemName.setAttribute("id", "itemname" + increment);
 			inputItemName.setAttribute("type", "text");
 			inputItemName.setAttribute("placeholder", "Nama Barang");
+			inputItemName.setAttribute("required", true);
 			divColItemName.append(inputItemName);
 		
 			var divColItemQty = document.createElement("div");
@@ -250,6 +255,7 @@ function generateInputItem() {
 			inputItemQty.setAttribute("type", "number");
 			inputItemQty.setAttribute("placeholder", "Qty");
 			inputItemQty.setAttribute("onchange", "generateTotal(" + increment + ")");
+			inputItemQty.setAttribute("required", true);
 			divColItemQty.append(inputItemQty);
 		
 			var divColItemSatuan = document.createElement("div");
@@ -261,6 +267,7 @@ function generateInputItem() {
 			inputItemSatuan.setAttribute("type", "number");
 			inputItemSatuan.setAttribute("placeholder", "Harga Satuan");
 			inputItemSatuan.setAttribute("onchange", "generateTotal(" + increment + ")");
+			inputItemSatuan.setAttribute("required", true);
 			divColItemSatuan.append(inputItemSatuan);
 		
 			var divColItemTotal = document.createElement("div");

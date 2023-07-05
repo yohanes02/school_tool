@@ -7,13 +7,13 @@
 					<div class="col-12 mb-3">
 						<label for="" class="form-label">Judul Pengajuan</label>
 						<div class="col-lg-11">
-							<input class="form-control" name="titlesubmission" type="text">
+							<input class="form-control" name="titlesubmission" type="text" required>
 						</div>
 					</div>
 					<div class="col-12 mb-3">
 						<label for="" class="form-label">Tipe Pengajuan</label>
 						<div class="col-lg-11">
-							<select name="typesubmission" id="typesubmission" class="form-select">
+							<select name="typesubmission" id="typesubmission" class="form-select" required>
 								<option selected disabled>Pilih Tipe Pengajuan</option>
 								<option value="1">Bulanan</option>
 								<option value="2">Random</option>
@@ -58,7 +58,7 @@
 								<div class="form-floating mb-2">
 									<select name="itemgroup0" class="form-select">
 										<?php foreach ($item_master as $dt) : ?>
-											<option value="<?=$dt['id']?>"><?=$dt['tool_group']?></option>
+											<option value="<?= $dt['id'] ?>"><?= $dt['tool_group'] ?></option>
 										<?php endforeach; ?>
 									</select>
 									<label for="itemSelect">Tool Group</label>
@@ -67,21 +67,23 @@
 							<div class="offset-1 col-lg-10" id="itemexisting0" style="display: none;">
 								<div class="form-floating mb-2">
 									<select name="itemexisting0" class="form-select" onchange="getSelectedItemExisting(0)">
-										<?php $i = 0; foreach ($tool_data as $dt) : ?>
-											<option value="<?=$dt['id']?>"><?=$dt['tool_name']?></option>
-										<?php $i++; endforeach; ?>
+										<?php $i = 0;
+										foreach ($tool_data as $dt) : ?>
+											<option value="<?= $dt['id'] ?>"><?= $dt['tool_name'] ?></option>
+										<?php $i++;
+										endforeach; ?>
 									</select>
 									<label for="itemSelect">Tool Item</label>
 								</div>
 							</div>
 							<div class="offset-1 col-lg-5">
-								<input class="form-control" name="itemname0" id="itemname0" type="text" placeholder="Nama Barang">
+								<input class="form-control" name="itemname0" id="itemname0" type="text" placeholder="Nama Barang" required>
 							</div>
 							<div class="col-lg-1">
-								<input class="form-control" name="itemqty0" id="itemqty0" type="number" placeholder="Qty" onchange="generateTotal(0)">
+								<input class="form-control" name="itemqty0" id="itemqty0" type="number" placeholder="Qty" onchange="generateTotal(0)" required>
 							</div>
 							<div class="col-lg-2">
-								<input class="form-control" name="itemsatuan0" id="itemsatuan0" type="number" placeholder="Harga Satuan" onchange="generateTotal(0)">
+								<input class="form-control" name="itemsatuan0" id="itemsatuan0" type="number" placeholder="Harga Satuan" onchange="generateTotal(0)" required>
 							</div>
 							<div class="col-lg-2">
 								<input class="form-control bg-body-secondary" name="itemtotal0" id="itemtotal0" type="number" placeholder="Total Harga" readonly>
@@ -99,7 +101,7 @@
 						</div>
 					</div>
 					<div class="col-lg-3 mt-3 mb-5">
-						<button class="btn btn-info" type="button" onclick="generateInputItem()">
+						<button class="btn btn-info" type="button" onclick="generateInputItem(false)">
 							<i class="bi bi-plus-circle-dotted"></i>
 							Tambah Barang
 						</button>

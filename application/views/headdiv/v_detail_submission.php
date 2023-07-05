@@ -28,20 +28,24 @@
 					</div>
 					<div class="row mb-3">
 						<label for="" class="col-lg-2 col-form-label">Pengajuan Bulan</label>
-						<div class="col-lg-10">
-							<?php if ($submission_data['month'] == "1") echo "Januari"; ?>
-							<?php if ($submission_data['month'] == "2") echo "Februari"; ?>
-							<?php if ($submission_data['month'] == "3") echo "Maret"; ?>
-							<?php if ($submission_data['month'] == "4") echo "April"; ?>
-							<?php if ($submission_data['month'] == "5") echo "Mei"; ?>
-							<?php if ($submission_data['month'] == "6") echo "Juni"; ?>
-							<?php if ($submission_data['month'] == "7") echo "Juli"; ?>
-							<?php if ($submission_data['month'] == "8") echo "Agustus"; ?>
-							<?php if ($submission_data['month'] == "9") echo "September"; ?>
-							<?php if ($submission_data['month'] == "10") echo "Oktober"; ?>
-							<?php if ($submission_data['month'] == "11") echo "Novemeber"; ?>
-							<?php if ($submission_data['month'] == "12") echo "Desember"; ?>
-						</div>
+						<?php if ($submission_data['submission_type'] == "1") : ?>
+							<div class="col-lg-10">
+								<?php if ($submission_data['month'] == "1") echo "Januari"; ?>
+								<?php if ($submission_data['month'] == "2") echo "Februari"; ?>
+								<?php if ($submission_data['month'] == "3") echo "Maret"; ?>
+								<?php if ($submission_data['month'] == "4") echo "April"; ?>
+								<?php if ($submission_data['month'] == "5") echo "Mei"; ?>
+								<?php if ($submission_data['month'] == "6") echo "Juni"; ?>
+								<?php if ($submission_data['month'] == "7") echo "Juli"; ?>
+								<?php if ($submission_data['month'] == "8") echo "Agustus"; ?>
+								<?php if ($submission_data['month'] == "9") echo "September"; ?>
+								<?php if ($submission_data['month'] == "10") echo "Oktober"; ?>
+								<?php if ($submission_data['month'] == "11") echo "Novemeber"; ?>
+								<?php if ($submission_data['month'] == "12") echo "Desember"; ?>
+							</div>
+						<?php else : ?>
+							<div class="col-lg-10"> - </div>
+						<?php endif; ?>
 					</div>
 					<div class="row mb-3">
 						<label for="" class="col-lg-2 col-form-label">Status</label>

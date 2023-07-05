@@ -15,13 +15,25 @@
 				<li class="nav-item dropdown pe-3">
 
 					<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-						<span class="d-none d-md-block dropdown-toggle ps-2"><?= $user['first_name'] ?> <?= $user['last_name'] ?> - <?= $user['user_type_name'] ?></span>
+						<?php if($this->session->userdata('utype') == 5) : ?>
+							<span class="d-none d-md-block dropdown-toggle ps-2"><?= $user['first_name'] ?> <?= $user['last_name'] ?> - <?= $user['user_type_name'] ?> - <?= $user['grade'] ?> <?= $user['abbv_major'] ?></span>
+							<?php elseif($this->session->userdata('utype') == 1) : ?>
+							<span class="d-none d-md-block dropdown-toggle ps-2"><?= $user['first_name'] ?> <?= $user['last_name'] ?> - <?= $user['user_type_name'] ?> <?= $user['abbv_major'] ?></span>
+						<?php else : ?>
+							<span class="d-none d-md-block dropdown-toggle ps-2"><?= $user['first_name'] ?> <?= $user['last_name'] ?> - <?= $user['user_type_name'] ?></span>
+						<?php endif; ?>
 					</a><!-- End Profile Iamge Icon -->
 
 					<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 						<li class="dropdown-header">
 							<h6><?= $user['first_name'] ?> <?= $user['last_name'] ?></h6>
-							<span><?= $user['user_type_name'] ?></span>
+						<?php if($this->session->userdata('utype') == 5) : ?>
+								<span><?= $user['user_type_name'] ?> - <?= $user['grade'] ?> <?= $user['abbv_major'] ?></span>
+							<?php elseif($this->session->userdata('utype') == 1) : ?>
+								<span><?= $user['user_type_name'] ?> <?= $user['abbv_major'] ?></span>
+						<?php else : ?>
+								<span><?= $user['user_type_name'] ?></span>
+						<?php endif; ?>
 						</li>
 						<li>
 							<hr class="dropdown-divider">

@@ -20,25 +20,28 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-12 mb-3" id="parentmonthsubmission">
-						<label for="" class="form-label">Pengajuan Bulan</label>
-						<div class="col-lg-12">
-							<select name="monthsubmission" id="monthsubmission" class="form-select" disabled>
-								<option <?php if ($submission_data['month'] == '1') echo 'selected'; ?> value="1">Januari</option>
-								<option <?php if ($submission_data['month'] == '2') echo 'selected'; ?> value="2">Februari</option>
-								<option <?php if ($submission_data['month'] == '3') echo 'selected'; ?> value="3">Maret</option>
-								<option <?php if ($submission_data['month'] == '4') echo 'selected'; ?> value="4">April</option>
-								<option <?php if ($submission_data['month'] == '5') echo 'selected'; ?> value="5">Mei</option>
-								<option <?php if ($submission_data['month'] == '6') echo 'selected'; ?> value="6">Juni</option>
-								<option <?php if ($submission_data['month'] == '7') echo 'selected'; ?> value="7">Juli</option>
-								<option <?php if ($submission_data['month'] == '8') echo 'selected'; ?> value="8">Agustus</option>
-								<option <?php if ($submission_data['month'] == '9') echo 'selected'; ?> value="9">September</option>
-								<option <?php if ($submission_data['month'] == '10') echo 'selected'; ?> value="10">Oktober</option>
-								<option <?php if ($submission_data['month'] == '11') echo 'selected'; ?> value="11">November</option>
-								<option <?php if ($submission_data['month'] == '12') echo 'selected'; ?> value="12">Desember</option>
-							</select>
+					<?php if ($submission_data['submission_type'] == "1") : ?>
+						<div class="col-12 mb-3" id="parentmonthsubmission">
+							<label for="" class="form-label">Pengajuan Bulan</label>
+							<div class="col-lg-12">
+								<select name="monthsubmission" id="monthsubmission" class="form-select" disabled>
+									<option <?php if ($submission_data['month'] == '1') echo 'selected'; ?> value="1">Januari</option>
+									<option <?php if ($submission_data['month'] == '2') echo 'selected'; ?> value="2">Februari</option>
+									<option <?php if ($submission_data['month'] == '3') echo 'selected'; ?> value="3">Maret</option>
+									<option <?php if ($submission_data['month'] == '4') echo 'selected'; ?> value="4">April</option>
+									<option <?php if ($submission_data['month'] == '5') echo 'selected'; ?> value="5">Mei</option>
+									<option <?php if ($submission_data['month'] == '6') echo 'selected'; ?> value="6">Juni</option>
+									<option <?php if ($submission_data['month'] == '7') echo 'selected'; ?> value="7">Juli</option>
+									<option <?php if ($submission_data['month'] == '8') echo 'selected'; ?> value="8">Agustus</option>
+									<option <?php if ($submission_data['month'] == '9') echo 'selected'; ?> value="9">September</option>
+									<option <?php if ($submission_data['month'] == '10') echo 'selected'; ?> value="10">Oktober</option>
+									<option <?php if ($submission_data['month'] == '11') echo 'selected'; ?> value="11">November</option>
+									<option <?php if ($submission_data['month'] == '12') echo 'selected'; ?> value="12">Desember</option>
+								</select>
+							</div>
+
 						</div>
-					</div>
+					<?php endif; ?>
 					<div class="col-12" id="parent-list-item">
 						<label for="" class="form-label">Daftar Barang</label>
 						<div class="col-lg-1">
@@ -49,7 +52,8 @@
 							$itemArrived = true;
 						} ?>
 						<?php for ($i = 0; $i < count($submission_item_data); $i++) : ?>
-							<?php $allIsInserted = true; $isInserted = false;
+							<?php $allIsInserted = true;
+							$isInserted = false;
 							if ($submission_item_data[$i]['isInserted'] == "1") {
 								$isInserted = true;
 							} else {

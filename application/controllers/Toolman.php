@@ -26,9 +26,12 @@ class Toolman extends CI_Controller
 	public function index()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
-		$groupData = $this->Core_m->getAll('tool_unique')->result_array();
+		$groupData = $this->Core_m->getToolUniqueByMajor($this->session->userdata('major'))->result_array();
 		for ($i = 0; $i < count($groupData); $i++) {
 			$quantity = $this->Toolman_m->getQtyItem($groupData[$i]['tool_code']);
 			$groupData[$i]['quantity'] = $quantity;
@@ -65,7 +68,8 @@ class Toolman extends CI_Controller
 
 		$ins = array(
 			'tool_code' => $post['groupcode'],
-			'tool_group' => $post['groupname']
+			'tool_group' => $post['groupname'],
+			'major' => $this->session->userdata('major')
 		);
 
 		$this->Core_m->insertData($ins, 'tool_unique');
@@ -75,7 +79,10 @@ class Toolman extends CI_Controller
 	public function itemsPage()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$itemMaster = $this->Core_m->getToolUniqueByMajor($this->session->userdata('major'))->result_array();
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
@@ -117,7 +124,10 @@ class Toolman extends CI_Controller
 	public function detailItem($id)
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$toolDataDetail = $this->Core_m->getById($id, 'tool')->row_array();
 		$studentDataDetail = $this->Toolman_m->getStudentByMajor($this->session->userdata('major'))->result_array();
@@ -139,7 +149,10 @@ class Toolman extends CI_Controller
 	public function inOutPage()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$borrowingDataDetail = $this->Toolman_m->getHistoryBorrow2($this->session->userdata('major'), null, null)->result_array();
 
@@ -174,8 +187,11 @@ class Toolman extends CI_Controller
 	public function detailBorrow($id)
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
-
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+		
 		$borrowDataDetail = $this->Toolman_m->getDetailBorrow($id)->row_array();
 		$borrowDataDetail['toolDatas'] = [];
 		$tools = explode(",", $borrowDataDetail['tool_id']);
@@ -349,7 +365,10 @@ class Toolman extends CI_Controller
 	public function submission()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$submissionDataDetail = $this->Core_m->getDataSubmission($this->session->userdata('major'))->result_array();
 
@@ -365,10 +384,15 @@ class Toolman extends CI_Controller
 	public function detailSubmission($id)
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$submissionData = $this->Toolman_m->getDataSubmissioById($id)->row_array();
 		$submissionHistoryData = $this->Toolman_m->getSubmissionHistoryBySubmissionId($submissionData['id'])->result_array();
+
+		// print_r($submissionData);die;
 
 		$itemMaster = $this->Core_m->getAll('tool_unique')->result_array();
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
@@ -396,10 +420,14 @@ class Toolman extends CI_Controller
 	public function detailHistorySubmission($id)
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
 
 		$submissionHistoryData = $this->Core_m->getById($id, 'submission_history')->row_array();
 		$submissionData = $this->Toolman_m->getDataSubmissioById($submissionHistoryData['submission_id'])->row_array();
+		// print_r($submissionData);die;
 
 		$data['user'] = $userData;
 		$data['submission_data'] = $submissionData;
@@ -418,9 +446,12 @@ class Toolman extends CI_Controller
 	public function newSubmission()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
-
-		$itemMaster = $this->Core_m->getAll('tool_unique')->result_array();
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+		
+		$itemMaster = $this->Core_m->getToolUniqueByMajor($this->session->userdata('major'))->result_array();
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
 
 		$data['user'] = $userData;

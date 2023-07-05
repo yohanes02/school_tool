@@ -3,36 +3,36 @@
 		<section class="section dashboard">
 			<div class="card">
 				<div class="card-body">
-					<div class="card-title">Input Item</div>
-					<form action="<?=base_url()?>toolman/insertItems" method="post">
+					<div class="card-title">Input Barang</div>
+					<form action="<?= base_url() ?>toolman/insertItems" method="post">
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="row">
 									<div class="col-lg-3">
 										<div class="form-floating mb-2">
-											<select name="toolcode" id="itemSelect" class="form-select">
+											<select name="toolcode" id="itemSelect" class="form-select" required>
 												<?php foreach ($item_master as $dt) : ?>
-													<option value="<?=$dt['tool_code']?>"><?=$dt['tool_group']?></option>
+													<option value="<?= $dt['tool_code'] ?>"><?= $dt['tool_group'] ?></option>
 												<?php endforeach; ?>
 											</select>
-											<label for="itemSelect">Tool Group</label>
+											<label for="itemSelect">Grup Barang</label>
 										</div>
 									</div>
 									<div class="col-lg-9">
 										<div class="form-floating mb-2">
-											<input type="text" class="form-control" placeholder="toolname" name="toolname">
-											<label for="floatingInput">Tool Name</label>
+											<input type="text" class="form-control" placeholder="toolname" name="toolname" required>
+											<label for="floatingInput">Nama Barang</label>
 										</div>
 									</div>
 									<div class="col-lg-4">
 										<div class="form-floating mb-2">
-											<input type="number" class="form-control" placeholder="groupname" name="quantity">
+											<input type="number" class="form-control" placeholder="groupname" name="quantity" required>
 											<label for="floatingInput">Quantity</label>
 										</div>
 									</div>
 									<div class="col-lg-4">
 										<div class="form-floating mb-2">
-											<input type="number" class="form-control" placeholder="groupname" name="available">
+											<input type="number" class="form-control" placeholder="groupname" name="available" required>
 											<label for="floatingInput">Available</label>
 										</div>
 									</div>
@@ -77,7 +77,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php $no = 1; foreach ($tool_data as $dt) : ?>
+								<?php $no = 1;
+								foreach ($tool_data as $dt) : ?>
 									<tr>
 										<td><?= $no ?></td>
 										<td><?= $dt['tool_code'] ?></td>
@@ -86,14 +87,15 @@
 										<td><?= $dt['available'] ?></td>
 										<td><?= $dt['broken'] ?></td>
 										<td>
-												<a href="<?=base_url()?>toolman/detailItem/<?=$dt['id']?>" target="_blank">
+											<a href="<?= base_url() ?>toolman/detailItem/<?= $dt['id'] ?>" target="_blank">
 												<div class='d-grid'>
-													<button id="edit-<?=$dt['id']?>" class="btn btn-success" onclick=""> Detail Barang </button>
+													<button id="edit-<?= $dt['id'] ?>" class="btn btn-success" onclick=""> Detail Barang </button>
 												</div>
 											</a>
 										</td>
 									</tr>
-								<?php $no++; endforeach; ?>
+								<?php $no++;
+								endforeach; ?>
 							</tbody>
 						</table>
 					</div>
