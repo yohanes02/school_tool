@@ -191,7 +191,7 @@ class Toolman extends CI_Controller
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
 		$userData['abbv_major'] = $majorData['abbv_major'];
 		$userData['full_major'] = $majorData['full_major'];
-		
+
 		$borrowDataDetail = $this->Toolman_m->getDetailBorrow($id)->row_array();
 		$borrowDataDetail['toolDatas'] = [];
 		$tools = explode(",", $borrowDataDetail['tool_id']);
@@ -450,7 +450,7 @@ class Toolman extends CI_Controller
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
 		$userData['abbv_major'] = $majorData['abbv_major'];
 		$userData['full_major'] = $majorData['full_major'];
-		
+
 		$itemMaster = $this->Core_m->getToolUniqueByMajor($this->session->userdata('major'))->result_array();
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
 
@@ -486,7 +486,9 @@ class Toolman extends CI_Controller
 					if (isset($post['itemname' . $i]) && $dataFullyFilled) {
 						$photo = "";
 						if ($_FILES["itemimage" . $i]['name'] != null && $_FILES["itemimage" . $i]['name'] != "") {
-							$fileUploaded = $this->ups("itemimage" . $i);
+							$file_name = strtolower($this->generateRandomString());
+							$ext = explode(".", $_FILES["itemimage" . $i]['name']);
+							$fileUploaded = $this->ups("itemimage" . $i, $file_name);
 							if ($fileUploaded) {
 								$photo = $_FILES["itemimage" . $i]['name'];
 							}
@@ -496,7 +498,7 @@ class Toolman extends CI_Controller
 						$arrInside['qty'] = $post['itemqty' . $i];
 						$arrInside['piece'] = $post['itemsatuan' . $i];
 						$arrInside['total'] = $post['itemtotal' . $i];
-						$arrInside['image'] = $photo;
+						$arrInside['image'] = $file_name . '.' . $ext[1];
 						$arrInside['specification'] = $post['itemspecification' . $i];
 						if (isset($post['itemexist' . $i])) {
 							$arrInside['existingItem'] = 1;
@@ -633,7 +635,7 @@ class Toolman extends CI_Controller
 		$updateItemsData = array("submission_data" => json_encode($items));
 		$this->Core_m->updateData($id, $updateItemsData, 'submission_history');
 
-		redirect('toolman/detailHistorySubmission/'.$id);
+		redirect('toolman/detailHistorySubmission/' . $id);
 	}
 
 	public function getToolData()
@@ -655,41 +657,14 @@ class Toolman extends CI_Controller
 			"tool_data" => $toolData,
 			"tool_group" => $toolGroup,
 		);
-		if ($toolData == null || $toolGroup == null) {
+		if ($toolData == null && $toolGroup == null) {
 			echo json_encode("NO DATA");
 		} else {
 			echo json_encode($data);
 		}
 	}
 
-	public function uploadImage()
-	{
-		print_r($_FILES);
-		echo "<br/>";
-		if (count($_FILES) != 0) {
-			$files = array_keys($_FILES);
-			$idx = 0;
-			foreach ($files as $file) {
-				if ($_FILES["img$idx"]['name'] != null && $_FILES["img$idx"]['name'] != '') {
-					$fileUploaded = $this->ups($file);
-
-					if (!$fileUploaded) {
-						$resp['status'] = "NOK";
-						$resp['description'] = "Error in upload file";
-
-						echo json_encode($resp);
-						return;
-					} else {
-						array_push($photos, str_replace(' ', '_', $_FILES["img$idx"]['name']));
-					}
-				}
-				$idx++;
-			}
-		}
-	}
-
-
-	private function ups($input)
+	private function ups($input, $file_name)
 	{
 		echo $input . "\n";
 		$temp = $_FILES[$input]['tmp_name'];
@@ -698,6 +673,7 @@ class Toolman extends CI_Controller
 		$config['allowed_types']	= 'gif|jpg|jpeg|png|csv|xls|doc|docx|xlsx|gif';
 		$config['max_size']			= 10240;
 		$config['overwrite'] 		= TRUE;
+		$config['file_name']			= $file_name;
 
 		$this->upload->initialize($config);
 		if (!$this->upload->do_upload($input)) {
@@ -713,5 +689,18 @@ class Toolman extends CI_Controller
 		}
 
 		return true;
+	}
+
+	function generateRandomString()
+	{
+		$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		$randomString = '';
+
+		for ($i = 0; $i < 12; $i++) {
+			$index = rand(0, strlen($characters) - 1);
+			$randomString .= $characters[$index];
+		}
+
+		return $randomString;
 	}
 }
