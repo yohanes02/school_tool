@@ -63,6 +63,7 @@ function generateInputBorrow() {
 			inputItemCount.setAttribute("id", "itemborrowcount" + increment);
 			inputItemCount.setAttribute("name", "itemborrowcount" + increment);
 			inputItemCount.setAttribute("type", "number");
+			inputItemCount.setAttribute("required", true);
 			divColItemCount.append(inputItemCount);
 
 			var divColDelete = document.createElement("div");

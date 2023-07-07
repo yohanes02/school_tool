@@ -30,7 +30,7 @@
 	<link href="<?=base_url()?>assets/css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="background-image: url('<?= base_url() ?>assets/img/bg_login.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: 100% 100%;">
 
 	<main>
 		<div class="container">

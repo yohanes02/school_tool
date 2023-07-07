@@ -93,7 +93,7 @@
 									<?php if ($dt['status'] == "7") echo "Selesai"; ?>
 								</td>
 								<td>
-									<a href="<?= base_url() ?>toolman/detailHistorySubmission/<?= $dt['id'] ?>" target="_blank">
+									<a href="<?= base_url() ?>toolman/detailHistorySubmission/<?= $dt['id'] ?>">
 										<div class='d-grid'>
 											<button id="" class="btn btn-success"> Lihat Detail </button>
 										</div>

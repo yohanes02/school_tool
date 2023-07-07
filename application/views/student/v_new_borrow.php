@@ -8,7 +8,7 @@
 						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Tipe Peminjam</label>
 							<div class="col-lg-10">
-								<select name="typeborrower" id="borrower-type-select" class="form-select">
+								<select name="typeborrower" id="borrower-type-select" class="form-select" required>
 									<option value="1">Individual</option>
 									<option value="2">Kelompok</option>
 									<option value="3">Kelas</option>
@@ -24,7 +24,7 @@
 										<input class="form-control text-center" type="text" id="itemborrownumber0" value="1" disabled>
 									</div>
 									<div class="col-lg-7">
-										<select name="itemborrowname0" id="itemborrowname0" class="form-select">
+										<select name="itemborrowname0" id="itemborrowname0" class="form-select" required>
 											<?php foreach ($tool_data as $dt) : ?>
 												<option value="<?= $dt['id'] ?>"><?= $dt['tool_code'] ?> - <?= $dt['tool_name'] ?></option>
 											<?php endforeach; ?>
@@ -33,7 +33,7 @@
 										<!-- <input class="form-control" name="itemborrowname0" id="itemborrowname0" type="text"> -->
 									</div>
 									<div class="col-lg-2">
-										<input class="form-control" name="itemborrowcount0" id="itemborrowcount0" type="number">
+										<input class="form-control" name="itemborrowcount0" id="itemborrowcount0" type="number" required>
 									</div>
 									<div class="col-lg-2">
 										<div class="d-grid">
@@ -60,9 +60,11 @@
 						<div class="row">
 							<div class="col-lg-7"></div>
 							<div class="col-lg-2">
-								<div class="d-grid">
-									<button class="btn btn-lg btn-outline-dark" type="submit">Cancel</button>
-								</div>
+								<a href="<?= base_url() ?>student/inOutPage">
+									<div class="d-grid">
+										<button class="btn btn-lg btn-outline-dark" type="button">Cancel</button>
+									</div>
+								</a>
 							</div>
 							<div class="col-lg-3">
 								<div class="d-grid">

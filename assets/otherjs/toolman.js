@@ -185,7 +185,7 @@ function generateInputItem(fromRevision) {
 				"checkItemIsExist('itemexist" + increment + "', " + increment + ")"
 			);
 			var inputSwitchLabel = document.createElement("label");
-			inputSwitchLabel.classList.add("formc-check-label");
+			inputSwitchLabel.classList.add("form-check-label");
 			inputSwitchLabel.setAttribute("for", "itemexist" + increment);
 			inputSwitchLabel.innerHTML = "Barang yang sudah ada ?";
 			divFormSwitch.append(inputSwitch);

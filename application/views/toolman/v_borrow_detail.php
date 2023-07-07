@@ -105,7 +105,7 @@
 								</div>
 							</div>
 							<div class="row mb-3">
-								<label for="" class="col-lg-2 col-form-label">Keterangan Siswa</label>
+								<label for="" class="col-lg-2 col-form-label">Keterangan Toolman</label>
 								<div class="col-lg-10">
 									<textarea class="form-control" name="infoborrowtoolman" id="" cols="30" rows="6" <?php if ($borrowData['status'] == '2') echo 'disabled' ?>><?= $borrowData['information_toolman'] ?></textarea>
 								</div>
@@ -125,9 +125,11 @@
 							<div class="row" style="display: <?php if ($borrowData['status'] == '2') echo 'none' ?>">
 								<div class="col-lg-8"></div>
 								<div class="col-lg-2">
-									<div class="d-grid">
-										<button class="btn btn-lg btn-outline-dark" type="submit">Cancel</button>
-									</div>
+									<a href="<?= base_url() ?>toolman/inOutPage">
+										<div class="d-grid">
+											<button class="btn btn-lg btn-outline-dark" type="button">Cancel</button>
+										</div>
+									</a>
 								</div>
 								<div class="col-lg-2">
 									<div class="d-grid">

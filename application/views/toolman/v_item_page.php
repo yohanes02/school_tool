@@ -87,7 +87,7 @@
 										<td><?= $dt['available'] ?></td>
 										<td><?= $dt['broken'] ?></td>
 										<td>
-											<a href="<?= base_url() ?>toolman/detailItem/<?= $dt['id'] ?>" target="_blank">
+											<a href="<?= base_url() ?>toolman/detailItem/<?= $dt['id'] ?>">
 												<div class='d-grid'>
 													<button id="edit-<?= $dt['id'] ?>" class="btn btn-success" onclick=""> Detail Barang </button>
 												</div>

@@ -88,7 +88,7 @@
 									<?php if ($dt['status'] == "7") echo "Selesai"; ?>
 								</td>
 								<td>
-									<a href="<?= base_url() ?>headdiv/detailHistorySubmission/<?= $dt['id'] ?>" target="_blank">
+									<a href="<?= base_url() ?>headdiv/detailHistorySubmission/<?= $dt['id'] ?>">
 										<div class='d-grid'>
 											<button id="" class="btn btn-success"> Lihat Detail </button>
 										</div>

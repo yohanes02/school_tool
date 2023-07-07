@@ -159,7 +159,7 @@ class Student extends CI_Controller
 		);
 
 		$this->Core_m->insertData($ins, 'tool_history_transaction');
-		redirect('toolman/inOutPage');
+		redirect('student/inOutPage');
 	}
 
 	public function getToolData()
