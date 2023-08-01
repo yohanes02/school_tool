@@ -40,6 +40,31 @@ class Headprog extends CI_Controller
 		$this->load->view("component/v_bottom");
 	}
 
+	public function detailItem($id)
+	{
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
+		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+
+		$toolDataDetail = $this->Core_m->getById($id, 'tool')->row_array();
+		$studentDataDetail = $this->Toolman_m->getStudentByMajor($this->session->userdata('major'))->result_array();
+
+		$borrowingDataDetail = $this->Toolman_m->getHistoryBorrow($this->session->userdata('major'), $id, 5)->result_array();
+
+		$data['user'] = $userData;
+		$data['toolDetail'] = $toolDataDetail;
+		$data['studentData'] = $studentDataDetail;
+		$data['borrowingData'] = $borrowingDataDetail;
+
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("headprog/v_item_detail_page", $data);
+		$this->load->view("component/v_bottom");
+	}
+
 	public function submission()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();

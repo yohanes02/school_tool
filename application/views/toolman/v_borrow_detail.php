@@ -14,11 +14,19 @@
 							</div>
 						</div>
 						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Nama Peminjam</label>
+							<label for="" class="col-lg-2 col-form-label">Nama Guru</label>
 							<div class="col-lg-10">
-								<input class="form-control" name="nameborrower" type="text" value="<?= $borrowData['first_name'] ?> <?= $borrowData['last_name'] ?> - <?= $borrowData['grade'] ?>" disabled>
+								<input class="form-control" type="text" value="<?= $borrowData['t_first_name'] ?> <?= $borrowData['t_last_name'] ?> - <?= $borrowData['major_name'] ?>" disabled>
 							</div>
 						</div>
+						<?php if (empty($borrowData['student_nisn']) == false) : ?>
+							<div class="row mb-3">
+								<label for="" class="col-lg-2 col-form-label">Nama Peminjam</label>
+								<div class="col-lg-10">
+									<input class="form-control" name="nameborrower" type="text" value="<?= $borrowData['first_name'] ?> <?= $borrowData['last_name'] ?> - <?= $borrowData['grade'] ?>" disabled>
+								</div>
+							</div>
+						<?php endif; ?>
 						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Tipe Peminjam</label>
 							<div class="col-lg-10">
@@ -26,6 +34,7 @@
 									<option value="1" <?php if ($borrowData['borrower_type'] == '1') echo 'selected' ?>>Individual</option>
 									<option value="2" <?php if ($borrowData['borrower_type'] == '2') echo 'selected' ?>>Kelompok</option>
 									<option value="3" <?php if ($borrowData['borrower_type'] == '3') echo 'selected' ?>>Kelas</option>
+									<option value="4" <?php if ($borrowData['borrower_type'] == '4') echo 'selected' ?>>Guru</option>
 								</select>
 							</div>
 						</div>
@@ -56,7 +65,7 @@
 							<?php endfor; ?>
 						</div>
 						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Keterangan Siswa</label>
+							<label for="" class="col-lg-2 col-form-label">Keterangan</label>
 							<div class="col-lg-10">
 								<textarea class="form-control" name="infoborrow" id="" cols="30" rows="6" disabled><?= $borrowData['information_student'] ?></textarea>
 							</div>
@@ -73,7 +82,7 @@
 								<?php endif; ?>
 							</div>
 						</div>
-						<?php if ($borrowData['borrow_accepted'] == "0") : ?>
+						<?php if ($borrowData['borrow_accepted'] == "0" && $borrowData['student_nisn'] == null) : ?>
 							<div class="col-12 mt-3 p-3 bg-body-secondary">
 								<h5 for="" class="form-label text-center">Konfirmasi Peminjaman</h5>
 								<div class="row col-lg-12">

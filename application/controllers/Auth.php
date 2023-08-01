@@ -30,6 +30,9 @@ class Auth extends CI_Controller
 			redirect('headschool');
 		}
 		if($this->session->userdata('utype') == 5) {
+			redirect('teacher');
+		}
+		if($this->session->userdata('utype') == 6) {
 			redirect('student');
 		}
 		$this->load->view('v_login');
@@ -73,6 +76,10 @@ class Auth extends CI_Controller
 		if($userData['type'] == 4) {
 			redirect('headschool');
 		}
+
+		if($userData['type'] == 5) {
+			redirect('teacher');
+		}
 	}
 
 	public function loginStudentMethod() {
@@ -93,7 +100,7 @@ class Auth extends CI_Controller
 			'major'	=> $userData['major'],
 			'fname'	=> $userData['first_name'],
 			'lname'	=> $userData['last_name'],
-			'utype'	=> 5,
+			'utype'	=> 6,
 		);
 		$this->session->set_userdata($dataSession);
 

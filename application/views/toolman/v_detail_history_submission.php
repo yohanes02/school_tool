@@ -71,6 +71,18 @@
 									Status : <?= $text ?>
 								</div>
 								<div class="offset-1 col-lg-5">
+									Nama Barang
+								</div>
+								<div class="col-lg-1">
+									Qty
+								</div>
+								<div class="col-lg-2">
+									Harga Satuan
+								</div>
+								<div class="col-lg-2">
+									Harga Total
+								</div>
+								<div class="offset-1 col-lg-5">
 									<input class="form-control" name="itemname<?= $i ?>" id="itemname<?= $i ?>" type="text" placeholder="Nama Barang" value="<?= $submission_item_data[$i]['title'] ?>" disabled>
 								</div>
 								<div class="col-lg-1">
@@ -111,7 +123,7 @@
 							<h4 style="font-weight: bolder;">Total Harga Pengajuan</h4>
 						</div>
 						<div class="col-lg-6">
-							<h4 style="font-weight: bolder;" id="totalpricesubmission">Rp. <?= $submission_data['price'] ?></h4>
+							<h4 style="font-weight: bolder;" id="totalpricesubmission"><?= $submission_data['price'] ?></h4>
 						</div>
 					</div>
 					<?php if (!$allIsInserted && $itemArrived) : ?>

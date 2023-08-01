@@ -15,7 +15,7 @@ class Student extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model(["Core_m", "Student_m"]);
-		if ($this->session->userdata('utype') != 5) {
+		if ($this->session->userdata('utype') != 6) {
 			redirect('auth');
 		}
 	}
@@ -28,7 +28,7 @@ class Student extends CI_Controller
 		$userData['abbv_major'] = $majorData['abbv_major'];
 		$userData['full_major'] = $majorData['full_major'];
 		
-		$toolData = $this->Core_m->getToolByMajor($userData['major'])->result_array();
+		$toolData = $this->Student_m->getToolDataStudent($userData['major'])->result_array();
 
 		$data['user'] = $userData;
 		$data['tool_data'] = $toolData;
@@ -112,9 +112,11 @@ class Student extends CI_Controller
 		$userData['abbv_major'] = $majorData['abbv_major'];
 		$userData['full_major'] = $majorData['full_major'];
 		
-		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
+		$toolData = $this->Student_m->getToolDataStudent($this->session->userdata('major'))->result_array();
+		$teacherData = $this->Student_m->getTeacherData($this->session->userdata('major'))->result_array();
 
 		$data['user'] = $userData;
+		$data['teacher_data'] = $teacherData;
 		$data['tool_data'] = $toolData;
 
 		$jsFile['page'] = 'student';
@@ -156,6 +158,7 @@ class Student extends CI_Controller
 			'quantity' => implode(',', $quantityItems),
 			// 'image_borrow' => $post['available'],
 			'information_student' => $post['infoborrow'],
+			'teacher_id' => $post['teachername'],
 		);
 
 		$this->Core_m->insertData($ins, 'tool_history_transaction');
@@ -164,7 +167,7 @@ class Student extends CI_Controller
 
 	public function getToolData()
 	{
-		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
+		$toolData = $this->Student_m->getToolDataStudent($this->session->userdata('major'))->result_array();
 		if ($toolData == null) {
 			echo json_encode("NO DATA");
 		} else {

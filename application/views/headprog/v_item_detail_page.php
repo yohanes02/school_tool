@@ -14,49 +14,45 @@
 						<div class="col-lg-5">
 							<div class="mb-3">
 								<label for="floatingInput">Nama Barang</label>
-								<input type="text" class="form-control form-control-lg" id="floatingInput" placeholder="toolname" name="toolname" value="<?= $toolDetail['tool_name'] ?>">
+								<input type="text" class="form-control form-control-lg" id="floatingInput" placeholder="toolname" name="toolname" value="<?= $toolDetail['tool_name'] ?>" disabled>
 							</div>
 						</div>
 						<div class="col-lg-2">
 							<div class="mb-2">
 								<label for="universalSelect">Barang Universal</label>
-								<select name="toolUniversal" id="universalSelect" class="form-select form-select-lg" required>
-									<option value="0" <?php if($toolDetail['is_universal'] == 0) echo 'selected'; ?>>Tidak</option>
-									<option value="1" <?php if($toolDetail['is_universal'] == 1) echo 'selected'; ?>>Ya</option>
-								</select>
+								<input type="text" class="form-control form-control-lg" id="floatingInput" placeholder="" name="" value="<?php if($toolDetail['is_universal']) { echo "Ya"; } else {echo "Tidak";} ?>" disabled>
+
 							</div>
 						</div>
 						<div class="col-lg-2">
 							<div class="mb-2">
 								<label for="borrowableSelect">Bisa Dipinjam</label>
-								<select name="toolBorrowable" id="borrowableSelect" class="form-select form-select-lg" required>
-									<option value="0" <?php if($toolDetail['is_borrowable'] == 0) echo 'selected'; ?>>Tidak</option>
-									<option value="1" <?php if($toolDetail['is_borrowable'] == 1) echo 'selected'; ?>>Ya</option>
-								</select>
+								<input type="text" class="form-control form-control-lg" id="floatingInput" placeholder="" name="" value="<?php if($toolDetail['is_borrowable']) { echo "Ya"; } else {echo "Tidak";} ?>" disabled>
+
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="mb-3">
 								<label for="floatingInput">Jumlah Barang</label>
-								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="quantityitem" name="quantity" value="<?= $toolDetail['quantity'] ?>">
+								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="quantityitem" name="quantity" value="<?= $toolDetail['quantity'] ?>" disabled>
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="mb-3">
 								<label for="floatingInput">Barang Available</label>
-								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="availableitem" name="available" value="<?= $toolDetail['available'] ?>">
+								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="availableitem" name="available" value="<?= $toolDetail['available'] ?>" disabled>
 							</div>
 						</div>
 						<div class="col-lg-4">
 							<div class="mb-3">
 								<label for="floatingInput">Barang Rusak</label>
-								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="brokenitem" name="broken" value="<?= $toolDetail['broken'] ?>">
+								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="brokenitem" name="broken" value="<?= $toolDetail['broken'] ?>" disabled>
 							</div>
 						</div>
 						<div class="col-lg-12">
 							<div class="mb-3">
 								<label for="">Keterangan</label>
-								<textarea type="text" class="form-control" placeholder="" name="information" style="height: 100px;"><?php echo $toolDetail['information'] ?></textarea>
+								<textarea type="text" class="form-control" placeholder="" name="information" style="height: 100px;" disabled><?php echo $toolDetail['information'] ?></textarea>
 							</div>
 						</div>
 					</div>
@@ -64,7 +60,8 @@
 						<div class="col-lg-9"></div>
 						<div class="col-lg-3">
 							<div class="d-grid">
-								<button type="submit" class="btn btn-success btn-lg">Simpan Data</button>
+								<a href="<?=base_url()?>/headprog"></a>
+								<button type="submit" class="btn btn-secondary btn-lg">Kembali</button>
 							</div>
 						</div>
 					</div>

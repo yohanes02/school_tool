@@ -18,10 +18,28 @@
 											<label for="itemSelect">Grup Barang</label>
 										</div>
 									</div>
-									<div class="col-lg-9">
+									<div class="col-lg-5">
 										<div class="form-floating mb-2">
 											<input type="text" class="form-control" placeholder="toolname" name="toolname" required>
 											<label for="floatingInput">Nama Barang</label>
+										</div>
+									</div>
+									<div class="col-lg-2">
+										<div class="form-floating mb-2">
+											<select name="toolUniversal" id="universalSelect" class="form-select" required>
+													<option value="0">Tidak</option>
+													<option value="1">Ya</option>
+											</select>
+											<label for="universalSelect">Barang Universal</label>
+										</div>
+									</div>
+									<div class="col-lg-2">
+										<div class="form-floating mb-2">
+											<select name="toolBorrowable" id="borrowableSelect" class="form-select" required>
+													<option value="0">Tidak</option>
+													<option value="1">Ya</option>
+											</select>
+											<label for="borrowableSelect">Bisa Dipinjam</label>
 										</div>
 									</div>
 									<div class="col-lg-4">
@@ -73,6 +91,7 @@
 									<th>Qty</th>
 									<th>Available</th>
 									<th>Broken</th>
+									<th>Universal</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -86,6 +105,7 @@
 										<td><?= $dt['quantity'] ?></td>
 										<td><?= $dt['available'] ?></td>
 										<td><?= $dt['broken'] ?></td>
+										<td><?php if($dt['is_universal'] == 0) {echo "Tidak";} else {echo "Ya";} ?></td>
 										<td>
 											<a href="<?= base_url() ?>toolman/detailItem/<?= $dt['id'] ?>">
 												<div class='d-grid'>

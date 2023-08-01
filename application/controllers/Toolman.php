@@ -116,8 +116,27 @@ class Toolman extends CI_Controller
 			'available' => $post['available'],
 			'broken' => $post['broken'],
 			'information' => $post['information'],
+			'is_universal' => $post['toolUniversal'],
+			'is_borrowable' => $post['toolBorrowable'],
 		);
 		$this->Core_m->insertData($ins, 'tool');
+		redirect('toolman/itemsPage');
+	}
+
+	public function editItem($id)
+	{
+		$post = $this->input->post();
+
+		$ins = array(
+			'tool_name' => $post['toolname'],
+			'quantity' => $post['quantity'],
+			'available' => $post['available'],
+			'broken' => $post['broken'],
+			'information' => $post['information'],
+			'is_universal' => $post['toolUniversal'],
+			'is_borrowable' => $post['toolBorrowable'],
+		);
+		$this->Core_m->updateData($id, $ins, 'tool');
 		redirect('toolman/itemsPage');
 	}
 
@@ -155,9 +174,27 @@ class Toolman extends CI_Controller
 		$userData['full_major'] = $majorData['full_major'];
 
 		$borrowingDataDetail = $this->Toolman_m->getHistoryBorrow2($this->session->userdata('major'), null, null)->result_array();
+		// print_r($borrowingDataDetail);
+		$borrowingDataDetailStudent = [];
+		$borrowingDataDetailTeacher = [];
+
+		for ($i = 0; $i < count($borrowingDataDetail); $i++) {
+			// print($i . " - ". $borrowingDataDetail[$i]['teacher_id']. " ");
+			if (empty($borrowingDataDetail[$i]['student_nisn'])) {
+				$teacherMajor = $this->Core_m->getById($borrowingDataDetail[$i]['major'], 'school_major')->row_array();
+				$borrowingDataDetail[$i]['first_name'] = $borrowingDataDetail[$i]['ufname'];
+				$borrowingDataDetail[$i]['last_name'] = $borrowingDataDetail[$i]['ulname'];
+				$borrowingDataDetail[$i]['major_name'] = $teacherMajor['abbv_major'];
+				array_push($borrowingDataDetailTeacher, $borrowingDataDetail[$i]);
+			} else {
+				array_push($borrowingDataDetailStudent, $borrowingDataDetail[$i]);
+			}
+		}
+		// die;
 
 		$data['user'] = $userData;
-		$data['borrowingData'] = $borrowingDataDetail;
+		$data['borrowingData']['student'] = $borrowingDataDetailStudent;
+		$data['borrowingData']['teacher'] = $borrowingDataDetailTeacher;
 		$this->load->view("component/v_top");
 		$this->load->view("component/v_header", $data);
 		$this->load->view("component/v_sidebar");
@@ -193,6 +230,8 @@ class Toolman extends CI_Controller
 		$userData['full_major'] = $majorData['full_major'];
 
 		$borrowDataDetail = $this->Toolman_m->getDetailBorrow($id)->row_array();
+		$dataMajor = $this->Core_m->getById($borrowDataDetail['major'], 'school_major')->row_array();
+		$borrowDataDetail['major_name'] = $dataMajor['abbv_major'];
 		$borrowDataDetail['toolDatas'] = [];
 		$tools = explode(",", $borrowDataDetail['tool_id']);
 
@@ -372,6 +411,10 @@ class Toolman extends CI_Controller
 
 		$submissionDataDetail = $this->Core_m->getDataSubmission($this->session->userdata('major'))->result_array();
 
+		for ($i = 0; $i < count($submissionDataDetail); $i++) {
+			$submissionDataDetail[$i]['price'] = $this->formatRupiah($submissionDataDetail[$i]['price']);
+		}
+
 		$data['user'] = $userData;
 		$data['submission_data'] = $submissionDataDetail;
 		$this->load->view("component/v_top");
@@ -390,7 +433,12 @@ class Toolman extends CI_Controller
 		$userData['full_major'] = $majorData['full_major'];
 
 		$submissionData = $this->Toolman_m->getDataSubmissioById($id)->row_array();
+		$submissionData['price'] = $this->formatRupiah($submissionData['price']);
 		$submissionHistoryData = $this->Toolman_m->getSubmissionHistoryBySubmissionId($submissionData['id'])->result_array();
+
+		for ($i = 0; $i < count($submissionHistoryData); $i++) {
+			$submissionHistoryData[$i]['price'] = $this->formatRupiah($submissionHistoryData[$i]['price']);
+		}
 
 		// print_r($submissionData);die;
 
@@ -427,6 +475,7 @@ class Toolman extends CI_Controller
 
 		$submissionHistoryData = $this->Core_m->getById($id, 'submission_history')->row_array();
 		$submissionData = $this->Toolman_m->getDataSubmissioById($submissionHistoryData['submission_id'])->row_array();
+		$submissionData['price'] = $this->formatRupiah($submissionData['price']);
 		// print_r($submissionData);die;
 
 		$data['user'] = $userData;
@@ -702,5 +751,15 @@ class Toolman extends CI_Controller
 		}
 
 		return $randomString;
+	}
+
+	function formatRupiah($priceRaw)
+	{
+		$priceReversed = strrev($priceRaw);
+		$splits = str_split($priceReversed, 3);
+
+		$rupiahReversed = implode(".", $splits);
+		$rupiah = strrev($rupiahReversed);
+		return 'Rp. ' . $rupiah;
 	}
 }

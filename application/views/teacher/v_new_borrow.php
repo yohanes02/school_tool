@@ -4,27 +4,7 @@
 			<div class="card-body">
 				<div class="card-title">Form Peminjaman Barang</div>
 				<div>
-					<form action="<?= base_url() ?>student/insertBorrow" method="post">
-						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Nama Guru</label>
-							<div class="col-lg-10">
-								<select name="teachername" id="teacher-select" class="form-select" required>
-									<?php foreach ($teacher_data as $teacher) : ?>
-									<option value="<?= $teacher['id'] ?>"><?= $teacher['first_name'] ?> <?= $teacher['last_name'] ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-						</div>
-						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Tipe Peminjam</label>
-							<div class="col-lg-10">
-								<select name="typeborrower" id="borrower-type-select" class="form-select" required>
-									<option value="1">Individual</option>
-									<option value="2">Kelompok</option>
-									<option value="3">Kelas</option>
-								</select>
-							</div>
-						</div>
+					<form action="<?= base_url() ?>teacher/insertBorrow" method="post">
 						<div class="col-12 mb-3">
 							<label for="" class="form-label">Barang Dipinjam</label>
 							<div id="parent-item-borrow">
@@ -70,7 +50,7 @@
 						<div class="row">
 							<div class="col-lg-7"></div>
 							<div class="col-lg-2">
-								<a href="<?= base_url() ?>student/inOutPage">
+								<a href="<?= base_url() ?>teacher/inOutPage">
 									<div class="d-grid">
 										<button class="btn btn-lg btn-outline-dark" type="button">Cancel</button>
 									</div>

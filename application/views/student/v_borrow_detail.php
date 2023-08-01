@@ -14,6 +14,12 @@
 							</div>
 						</div>
 						<div class="row mb-3">
+							<label for="" class="col-lg-2 col-form-label">Nama Guru</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" value="<?= $borrowData['t_first_name'] ?> <?= $borrowData['t_last_name'] ?>" disabled>
+							</div>
+						</div>
+						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Tipe Peminjam</label>
 							<div class="col-lg-10">
 								<?php if ($borrowData['borrower_type'] == "1") : ?>
@@ -53,7 +59,7 @@
 							<label for="" class="col-lg-2 col-form-label">Status</label>
 							<div class="col-lg-10">
 								<?php if ($borrowData['borrow_accepted'] == "0" && $borrowData['status'] == "0") : ?>
-									<input class="form-control" type="text" value="Menunggu Konfirmasi" disabled>
+									<input class="form-control" type="text" value="Menunggu Konfirmasi Guru" disabled>
 								<?php elseif ($borrowData['borrow_accepted'] == "1" && $borrowData['status'] == "0") : ?>
 									<input class="form-control" type="text" value="Peminjaman Disetujui" disabled>
 								<?php elseif ($borrowData['borrow_accepted'] == "2" && $borrowData['status'] == "0") : ?>
@@ -67,7 +73,7 @@
 							</div>
 						</div>
 						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Keterangan Siswa</label>
+							<label for="" class="col-lg-2 col-form-label">Keterangan</label>
 							<div class="col-lg-10">
 								<textarea class="form-control" name="infoborrow" id="" cols="30" rows="6" disabled><?= $borrowData['information_student'] ?></textarea>
 							</div>

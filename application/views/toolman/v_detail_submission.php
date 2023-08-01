@@ -244,7 +244,7 @@
 									<h4 style="font-weight: bolder;">Total Harga Pengajuan</h4>
 								</div>
 								<div class="col-lg-6">
-									<h4 style="font-weight: bolder;" id="totalpricesubmission">Rp. <?= $submission_data['price'] ?></h4>
+									<h4 style="font-weight: bolder;" id="totalpricesubmission"><?= $submission_data['price'] ?></h4>
 								</div>
 							</div>
 							<div class="row">
