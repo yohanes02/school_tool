@@ -96,6 +96,49 @@ class Headdiv extends CI_Controller
 		$this->load->view("component/v_bottom");
 	}
 
+	public function inOutPage()
+	{
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+
+		$allMajor = $this->Core_m->getAll('school_major')->result_array();
+		$borrowingDatas = [];
+		for ($i = 0; $i < count($allMajor); $i++) {
+			$borrowData = $this->Toolman_m->getHistoryBorrow2($allMajor[$i]['id'], null, null)->result_array();
+			
+			$borrowingDataDetailStudent = [];
+			$borrowingDataDetailTeacher = [];
+	
+			for ($j = 0; $j < count($borrowData); $j++) {
+				// print($j . " - ". $borrowData[$j]['teacher_id']. " ");
+				if (empty($borrowData[$j]['student_nisn'])) {
+					$teacherMajor = $this->Core_m->getById($borrowData[$j]['major'], 'school_major')->row_array();
+					$borrowData[$j]['first_name'] = $borrowData[$j]['ufname'];
+					$borrowData[$j]['last_name'] = $borrowData[$j]['ulname'];
+					$borrowData[$j]['major_name'] = $teacherMajor['abbv_major'];
+					array_push($borrowingDataDetailTeacher, $borrowData[$j]);
+				} else {
+					array_push($borrowingDataDetailStudent, $borrowData[$j]);
+				}
+			}
+			
+			$borrowingData['student'] = $borrowingDataDetailStudent;
+			$borrowingData['teacher'] = $borrowingDataDetailTeacher;
+			array_push($borrowingDatas, $borrowingData);
+		}
+
+		// die;
+
+		$data['user'] = $userData;
+		$data['borrowingDatas'] = $borrowingDatas;
+		$data['all_major'] = $allMajor;
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("headdiv/v_inout", $data);
+		$this->load->view("component/v_bottom");
+	}
+
 
 	public function submission()
 	{

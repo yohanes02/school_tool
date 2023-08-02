@@ -15,7 +15,7 @@
 					<div class="tab-content pt-2" id="borderedTabJustifiedContent">
 						<?php for ($i = 0; $i < count($tool_datas); $i++) : ?>
 							<div class="tab-pane fade show <?php if ($i == 0) echo 'active'; ?>" id="bordered-justified-<?= $i ?>" role="tabpanel" aria-labelledby="tab<?= $i ?>">
-								<h5 class="my-3"><?=$all_major[$i]['full_major']?></h5>
+								<h5 class="my-3 py-3 text-center bg-body-secondary"><?=$all_major[$i]['full_major']?></h5>
 								<div class="table-responsive">
 									<table class="table datatable table-striped">
 										<thead>

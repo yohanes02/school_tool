@@ -90,6 +90,43 @@ class Headprog extends CI_Controller
 		$this->load->view("component/v_bottom");
 	}
 
+	public function inOutPage()
+	{
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
+		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+
+		$borrowingDataDetail = $this->Toolman_m->getHistoryBorrow2($this->session->userdata('major'), null, null)->result_array();
+		// print_r($borrowingDataDetail);
+		$borrowingDataDetailStudent = [];
+		$borrowingDataDetailTeacher = [];
+
+		for ($i = 0; $i < count($borrowingDataDetail); $i++) {
+			// print($i . " - ". $borrowingDataDetail[$i]['teacher_id']. " ");
+			if (empty($borrowingDataDetail[$i]['student_nisn'])) {
+				$teacherMajor = $this->Core_m->getById($borrowingDataDetail[$i]['major'], 'school_major')->row_array();
+				$borrowingDataDetail[$i]['first_name'] = $borrowingDataDetail[$i]['ufname'];
+				$borrowingDataDetail[$i]['last_name'] = $borrowingDataDetail[$i]['ulname'];
+				$borrowingDataDetail[$i]['major_name'] = $teacherMajor['abbv_major'];
+				array_push($borrowingDataDetailTeacher, $borrowingDataDetail[$i]);
+			} else {
+				array_push($borrowingDataDetailStudent, $borrowingDataDetail[$i]);
+			}
+		}
+		// die;
+
+		$data['user'] = $userData;
+		$data['borrowingData']['student'] = $borrowingDataDetailStudent;
+		$data['borrowingData']['teacher'] = $borrowingDataDetailTeacher;
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("headprog/v_inout", $data);
+		$this->load->view("component/v_bottom");
+	}
+
 	public function submission()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
