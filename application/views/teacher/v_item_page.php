@@ -3,6 +3,7 @@
 		<section class="section dashboard">
 			<div class="card">
 				<div class="card-body table-border-style">
+					<div class="card-title">Daftar Barang</div>
 					<div class="table-responsive">
 						<table class="table datatable table-striped">
 							<thead>

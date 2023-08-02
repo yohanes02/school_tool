@@ -17,7 +17,7 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link " href="<?= base_url() ?>toolman">
+				<a class="nav-link " href="<?= base_url() ?>toolman/broken">
 					<i class="bi bi-grid"></i>
 					<span>Daftar Barang Rusak</span>
 				</a>
@@ -43,6 +43,12 @@
 					<span>Daftar Barang</span>
 				</a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link " href="<?= base_url() ?>headprog/broken">
+					<i class="bi bi-grid"></i>
+					<span>Daftar Barang Rusak</span>
+				</a>
+			</li>
 			<!-- <li class="nav-item">
 				<a class="nav-link " href="<?= base_url() ?>headprog/submission">
 					<i class="bi bi-grid"></i>
@@ -58,6 +64,12 @@
 					<span>Daftar Barang</span>
 				</a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link " href="<?= base_url() ?>headdiv/broken">
+					<i class="bi bi-grid"></i>
+					<span>Daftar Barang Rusak</span>
+				</a>
+			</li>
 			<!-- <li class="nav-item">
 				<a class="nav-link " href="<?= base_url() ?>headdiv/submission">
 					<i class="bi bi-grid"></i>
@@ -71,6 +83,12 @@
 				<a class="nav-link " href="<?= base_url() ?>headschool">
 					<i class="bi bi-grid"></i>
 					<span>Daftar Barang</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link " href="<?= base_url() ?>headschool/broken">
+					<i class="bi bi-grid"></i>
+					<span>Daftar Barang Rusak</span>
 				</a>
 			</li>
 			<!-- <li class="nav-item">

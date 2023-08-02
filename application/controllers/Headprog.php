@@ -65,6 +65,31 @@ class Headprog extends CI_Controller
 		$this->load->view("component/v_bottom");
 	}
 
+		public function broken()
+	{
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+
+		$itemMaster = $this->Core_m->getAll('tool_unique')->result_array();
+		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
+		$brokenTool = [];
+		for ($i=0; $i < count($toolData); $i++) { 
+			if($toolData[$i]['broken'] > 0) {
+				array_push($brokenTool, $toolData[$i]);
+			}
+		}
+
+		$data['user'] = $userData;
+		$data['item_master'] = $itemMaster;
+		$data['tool_data'] = $brokenTool;
+
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("headprog/v_item_broken_page", $data);
+		$this->load->view("component/v_bottom");
+	}
+
 	public function submission()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();

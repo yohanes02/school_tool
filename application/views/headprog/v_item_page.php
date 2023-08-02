@@ -3,6 +3,7 @@
 		<section class="section dashboard">
 			<div class="card">
 				<div class="card-body table-border-style">
+					<div class="card-title">Daftar Barang</div>
 					<div class="table-responsive">
 						<table class="table datatable table-striped">
 							<thead>
@@ -17,7 +18,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php $no = 1; foreach ($tool_data as $dt) : ?>
+								<?php $no = 1;
+								foreach ($tool_data as $dt) : ?>
 									<tr>
 										<td><?= $no ?></td>
 										<td><?= $dt['tool_code'] ?></td>
@@ -26,14 +28,15 @@
 										<td><?= $dt['available'] ?></td>
 										<td><?= $dt['broken'] ?></td>
 										<td>
-												<a href="<?=base_url()?>headprog/detailItem/<?=$dt['id']?>">
+											<a href="<?= base_url() ?>headprog/detailItem/<?= $dt['id'] ?>">
 												<div class='d-grid'>
-													<button id="edit-<?=$dt['id']?>" class="btn btn-success" onclick=""> Detail Barang </button>
+													<button id="edit-<?= $dt['id'] ?>" class="btn btn-success" onclick=""> Detail Barang </button>
 												</div>
 											</a>
 										</td>
 									</tr>
-								<?php $no++; endforeach; ?>
+								<?php $no++;
+								endforeach; ?>
 							</tbody>
 						</table>
 					</div>

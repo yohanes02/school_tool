@@ -3,7 +3,7 @@
 		<section class="section dashboard">
 			<div class="card">
 				<div class="card-body">
-					<div class="card-title">Daftar Barang</div>
+					<div class="card-title">Daftar Barang Rusak</div>
 					<!-- Bordered Tabs Justified -->
 					<ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
 						<?php for ($i = 0; $i < count($tool_datas); $i++) : ?>
@@ -23,9 +23,8 @@
 												<th>No</th>
 												<th>Tool Code</th>
 												<th>Tool Name</th>
-												<th>Qty</th>
-												<th>Available</th>
-												<th>Broken</th>
+												<th>Jumlah Barang</th>
+												<th>Barang Rusak</th>
 												<th>Action</th>
 											</tr>
 										</thead>
@@ -37,7 +36,6 @@
 													<td><?= $dt['tool_code'] ?></td>
 													<td><?= $dt['tool_name'] ?></td>
 													<td><?= $dt['quantity'] ?></td>
-													<td><?= $dt['available'] ?></td>
 													<td><?= $dt['broken'] ?></td>
 													<td>
 														<a href="<?= base_url() ?>headschool/detailItem/<?= $dt['id'] ?>">

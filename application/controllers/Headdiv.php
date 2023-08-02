@@ -64,6 +64,39 @@ class Headdiv extends CI_Controller
 		$this->load->view("component/v_bottom");
 	}
 
+	public function broken()
+	{
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+
+		// $itemMaster = $this->Core_m->getAll('tool_unique')->result_array();
+		$allMajor = $this->Core_m->getAll('school_major')->result_array();
+
+		$toolDatas = [];
+		for ($i = 0; $i < count($allMajor); $i++) {
+			$toolData = $this->Core_m->getToolByMajor($allMajor[$i]['id'])->result_array();
+			$brokenTool = [];
+			for ($j = 0; $j < count($toolData); $j++) {
+				if ($toolData[$j]['broken'] > 0) {
+					array_push($brokenTool, $toolData[$j]);
+				}
+			}
+			array_push($toolDatas, $brokenTool);
+		}
+
+		$data['user'] = $userData;
+		// $data['item_master'] = $itemMaster;
+		$data['tool_datas'] = $toolDatas;
+		$data['all_major'] = $allMajor;
+
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("headdiv/v_item_broken_page", $data);
+		$this->load->view("component/v_bottom");
+	}
+
+
 	public function submission()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
@@ -130,7 +163,7 @@ class Headdiv extends CI_Controller
 		$ids = explode("_", $history_id_submission_id);
 		$history_id = $ids[0];
 		$submission_id = $ids[1];
-		
+
 		$data = array("status" => 4);
 		$this->Core_m->updateData($history_id, $data, 'submission_history');
 
@@ -139,7 +172,7 @@ class Headdiv extends CI_Controller
 			"last_update" => date('Y-m-d H:i:s'),
 		);
 		$this->Core_m->updateData($submission_id, $data, 'submission');
-		redirect("headdiv/detailSubmission/".$submission_id);
+		redirect("headdiv/detailSubmission/" . $submission_id);
 	}
 
 	public function rejectSubmission($history_id_submission_id)
@@ -147,7 +180,7 @@ class Headdiv extends CI_Controller
 		$ids = explode("_", $history_id_submission_id);
 		$history_id = $ids[0];
 		$submission_id = $ids[1];
-		
+
 		$data = array("status" => 3);
 		$this->Core_m->updateData($history_id, $data, 'submission_history');
 
@@ -156,7 +189,7 @@ class Headdiv extends CI_Controller
 			"last_update" => date('Y-m-d H:i:s'),
 		);
 		$this->Core_m->updateData($submission_id, $data, 'submission');
-		redirect("headdiv/detailSubmission/".$submission_id);
+		redirect("headdiv/detailSubmission/" . $submission_id);
 	}
 
 

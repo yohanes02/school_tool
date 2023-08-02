@@ -401,6 +401,34 @@ class Toolman extends CI_Controller
 		redirect('toolman/detailBorrow/' . $id);
 	}
 
+	public function broken()
+	{
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
+		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+
+		$itemMaster = $this->Core_m->getToolUniqueByMajor($this->session->userdata('major'))->result_array();
+		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
+		$brokenTool = [];
+		for ($i=0; $i < count($toolData); $i++) { 
+			if($toolData[$i]['broken'] > 0) {
+				array_push($brokenTool, $toolData[$i]);
+			}
+		}
+
+		$data['user'] = $userData;
+		$data['item_master'] = $itemMaster;
+		$data['tool_data'] = $brokenTool;
+
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("toolman/v_item_broken_page", $data);
+		$this->load->view("component/v_bottom");
+	}
+
 	public function submission()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
