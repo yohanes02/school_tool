@@ -57,12 +57,39 @@ class Headdiv extends CI_Controller
 		$data['user'] = $userData;
 		$data['toolDetail'] = $toolDataDetail;
 
+		$jsFile['page'] = 'headdiv';
 		$this->load->view("component/v_top");
 		$this->load->view("component/v_header", $data);
 		$this->load->view("component/v_sidebar");
 		$this->load->view("headdiv/v_item_detail_page", $data);
-		$this->load->view("component/v_bottom");
+		$this->load->view("component/v_bottom", $jsFile);
 	}
+
+	public function editItem($id)
+	{
+		$post = $this->input->post();
+
+		$ins = array(
+			'tool_name' => $post['toolname'],
+			'quantity' => $post['quantity'],
+			'available' => $post['available'],
+			'broken' => $post['broken'],
+			'information' => $post['information'],
+			'is_universal' => $post['toolUniversal'],
+			'is_borrowable' => $post['toolBorrowable'],
+		);
+
+		if ($post['toolUniversal'] == "1") {
+			$allowedMajor = implode(",", $post['majorcb']);
+			$ins['allowed_major'] = $allowedMajor;
+		} else {
+			$ins['allowed_major'] = NULL;
+		}
+
+		$this->Core_m->updateData($id, $ins, 'tool');
+		redirect('headdiv');
+	}
+
 
 	public function broken()
 	{

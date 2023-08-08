@@ -58,14 +58,41 @@ class Headprog extends CI_Controller
 		$data['studentData'] = $studentDataDetail;
 		$data['borrowingData'] = $borrowingDataDetail;
 
+		$jsFile['page'] = 'headdiv';
 		$this->load->view("component/v_top");
 		$this->load->view("component/v_header", $data);
 		$this->load->view("component/v_sidebar");
 		$this->load->view("headprog/v_item_detail_page", $data);
-		$this->load->view("component/v_bottom");
+		$this->load->view("component/v_bottom", $jsFile);
 	}
 
-		public function broken()
+	public function editItem($id)
+	{
+		$post = $this->input->post();
+
+		$ins = array(
+			'tool_name' => $post['toolname'],
+			'quantity' => $post['quantity'],
+			'available' => $post['available'],
+			'broken' => $post['broken'],
+			'information' => $post['information'],
+			'is_universal' => $post['toolUniversal'],
+			'is_borrowable' => $post['toolBorrowable'],
+		);
+
+		if ($post['toolUniversal'] == "1") {
+			$allowedMajor = implode(",", $post['majorcb']);
+			$ins['allowed_major'] = $allowedMajor;
+		} else {
+			$ins['allowed_major'] = NULL;
+		}
+
+		$this->Core_m->updateData($id, $ins, 'tool');
+		redirect('headprog');
+	}
+
+
+	public function broken()
 	{
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
 		$userData['user_type_name'] = $this->getUserTypeName($userData['type']);
@@ -73,8 +100,8 @@ class Headprog extends CI_Controller
 		$itemMaster = $this->Core_m->getAll('tool_unique')->result_array();
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
 		$brokenTool = [];
-		for ($i=0; $i < count($toolData); $i++) { 
-			if($toolData[$i]['broken'] > 0) {
+		for ($i = 0; $i < count($toolData); $i++) {
+			if ($toolData[$i]['broken'] > 0) {
 				array_push($brokenTool, $toolData[$i]);
 			}
 		}
@@ -188,7 +215,7 @@ class Headprog extends CI_Controller
 		$ids = explode("_", $history_id_submission_id);
 		$history_id = $ids[0];
 		$submission_id = $ids[1];
-		
+
 		$data = array("status" => 2);
 		$this->Core_m->updateData($history_id, $data, 'submission_history');
 
@@ -197,7 +224,7 @@ class Headprog extends CI_Controller
 			"last_update" => date('Y-m-d H:i:s'),
 		);
 		$this->Core_m->updateData($submission_id, $data, 'submission');
-		redirect("headprog/detailSubmission/".$submission_id);
+		redirect("headprog/detailSubmission/" . $submission_id);
 	}
 
 	public function rejectSubmission($history_id_submission_id)
@@ -205,7 +232,7 @@ class Headprog extends CI_Controller
 		$ids = explode("_", $history_id_submission_id);
 		$history_id = $ids[0];
 		$submission_id = $ids[1];
-		
+
 		$data = array("status" => 1);
 		$this->Core_m->updateData($history_id, $data, 'submission_history');
 
@@ -214,7 +241,7 @@ class Headprog extends CI_Controller
 			"last_update" => date('Y-m-d H:i:s'),
 		);
 		$this->Core_m->updateData($submission_id, $data, 'submission');
-		redirect("headprog/detailSubmission/".$submission_id);
+		redirect("headprog/detailSubmission/" . $submission_id);
 	}
 
 
