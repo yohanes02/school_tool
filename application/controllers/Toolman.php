@@ -91,11 +91,12 @@ class Toolman extends CI_Controller
 		$data['item_master'] = $itemMaster;
 		$data['tool_data'] = $toolData;
 
+		$jsFile['page'] = 'toolman';
 		$this->load->view("component/v_top");
 		$this->load->view("component/v_header", $data);
 		$this->load->view("component/v_sidebar");
 		$this->load->view("toolman/v_item_page", $data);
-		$this->load->view("component/v_bottom");
+		$this->load->view("component/v_bottom", $jsFile);
 	}
 
 	public function insertItems()
@@ -103,10 +104,14 @@ class Toolman extends CI_Controller
 		$toolMajor = $this->session->userdata('major'); // Get MAJOR id
 
 		$post = $this->input->post();
+		// print_r($post);die;
 		$itemMaster = $this->Toolman_m->getItemMaster($post['toolcode'])->row_array(); // Get data from tool_unique
 		$lastIncrement = $itemMaster['last_increment'] + 1; // Increment for unique
 		$toolCode = $post['toolcode'] . "" . $lastIncrement;
 		$this->Core_m->updateData($itemMaster['id'], array('last_increment' => $lastIncrement), 'tool_unique');
+		array_push($post['majorcb'], $toolMajor);
+		$allowedMajor = implode(",", $post['majorcb']);
+
 
 		$ins = array(
 			'tool_code' => $toolCode,
@@ -119,6 +124,14 @@ class Toolman extends CI_Controller
 			'is_universal' => $post['toolUniversal'],
 			'is_borrowable' => $post['toolBorrowable'],
 		);
+
+		if ($post['toolUniversal'] == "1") {
+			$allowedMajor = implode(",", $post['majorcb']);
+			$ins['allowed_major'] = $allowedMajor;
+		} else {
+			$ins['allowed_major'] = NULL;
+		}
+
 		$this->Core_m->insertData($ins, 'tool');
 		redirect('toolman/itemsPage');
 	}
@@ -136,6 +149,14 @@ class Toolman extends CI_Controller
 			'is_universal' => $post['toolUniversal'],
 			'is_borrowable' => $post['toolBorrowable'],
 		);
+
+		if ($post['toolUniversal'] == "1") {
+			$allowedMajor = implode(",", $post['majorcb']);
+			$ins['allowed_major'] = $allowedMajor;
+		} else {
+			$ins['allowed_major'] = NULL;
+		}
+
 		$this->Core_m->updateData($id, $ins, 'tool');
 		redirect('toolman/itemsPage');
 	}
@@ -158,11 +179,12 @@ class Toolman extends CI_Controller
 		$data['studentData'] = $studentDataDetail;
 		$data['borrowingData'] = $borrowingDataDetail;
 
+		$jsFile['page'] = 'toolman';
 		$this->load->view("component/v_top");
 		$this->load->view("component/v_header", $data);
 		$this->load->view("component/v_sidebar");
 		$this->load->view("toolman/v_item_detail_page", $data);
-		$this->load->view("component/v_bottom");
+		$this->load->view("component/v_bottom", $jsFile);
 	}
 
 	public function inOutPage()
@@ -412,8 +434,8 @@ class Toolman extends CI_Controller
 		$itemMaster = $this->Core_m->getToolUniqueByMajor($this->session->userdata('major'))->result_array();
 		$toolData = $this->Core_m->getToolByMajor($this->session->userdata('major'))->result_array();
 		$brokenTool = [];
-		for ($i=0; $i < count($toolData); $i++) { 
-			if($toolData[$i]['broken'] > 0) {
+		for ($i = 0; $i < count($toolData); $i++) {
+			if ($toolData[$i]['broken'] > 0) {
 				array_push($brokenTool, $toolData[$i]);
 			}
 		}

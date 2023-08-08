@@ -14,7 +14,10 @@ class Teacher_m extends CI_Model
 	}
 
 	public function getToolDataTeacher($major) {
-		$this->db->where(['is_universal' => 1, 'is_borrowable' => 1]);
+		$where = "is_universal=1 AND is_borrowable=1 AND allowed_major LIKE '%".$major."%'";
+		// $this->db->where(['is_universal' => 1, 'is_borrowable' => 1]);
+		$this->db->where($where);
+
 		return $this->db->get('tool');
 	}
 

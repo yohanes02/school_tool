@@ -27,7 +27,7 @@ class Student extends CI_Controller
 		$userData['user_type_name'] = 'Student';
 		$userData['abbv_major'] = $majorData['abbv_major'];
 		$userData['full_major'] = $majorData['full_major'];
-		
+
 		$toolData = $this->Student_m->getToolDataStudent($userData['major'])->result_array();
 
 		$data['user'] = $userData;
@@ -111,7 +111,7 @@ class Student extends CI_Controller
 		$userData['user_type_name'] = 'Student';
 		$userData['abbv_major'] = $majorData['abbv_major'];
 		$userData['full_major'] = $majorData['full_major'];
-		
+
 		$toolData = $this->Student_m->getToolDataStudent($this->session->userdata('major'))->result_array();
 		$teacherData = $this->Student_m->getTeacherData($this->session->userdata('major'))->result_array();
 
@@ -149,6 +149,13 @@ class Student extends CI_Controller
 			$this->Core_m->updateData($toolIds[$i], array('available' => $itemLeftCurrent), 'tool');
 		}
 
+		$estTimeReturnString = $post['esttimereturn'];
+		$timestamp = strtotime($estTimeReturnString);
+		if ($timestamp === FALSE) {
+			$timestamp = strtotime(str_replace('/', '-', $estTimeReturnString));
+		}
+		$estTimeReturnDate = date('Y-m-d H:i:s', $timestamp);
+
 		$ins = array(
 			'tool_id' => implode(',', $toolIds),
 			'code_borrow' => $this->generateRandomString(),
@@ -156,6 +163,7 @@ class Student extends CI_Controller
 			'student_nisn' => $this->session->userdata("nisn"),
 			'major' => $this->session->userdata('major'),
 			'quantity' => implode(',', $quantityItems),
+			'est_time_return' => $estTimeReturnDate,
 			// 'image_borrow' => $post['available'],
 			'information_student' => $post['infoborrow'],
 			'teacher_id' => $post['teachername'],

@@ -56,6 +56,12 @@
 							<?php endfor; ?>
 						</div>
 						<div class="row mb-3">
+							<label for="" class="col-lg-2 col-form-label">Estimasi Pengembalian</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" value="<?= $borrowData['est_time_return'] ?>" disabled>
+							</div>
+						</div>
+						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Status</label>
 							<div class="col-lg-10">
 								<?php if ($borrowData['borrow_accepted'] == "0" && $borrowData['status'] == "0") : ?>

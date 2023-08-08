@@ -64,6 +64,14 @@
 								</div>
 							<?php endfor; ?>
 						</div>
+						<?php if ($borrowData['student_nisn'] != null) : ?>
+							<div class="row mb-3">
+								<label for="" class="col-lg-2 col-form-label">Estimasi Pengembalian</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text" value="<?= $borrowData['est_time_return'] ?>" disabled>
+								</div>
+							</div>
+						<?php endif; ?>
 						<div class="row mb-3">
 							<label for="" class="col-lg-2 col-form-label">Keterangan</label>
 							<div class="col-lg-10">

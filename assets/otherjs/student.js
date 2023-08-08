@@ -51,7 +51,7 @@ function generateInputBorrow() {
 				var optionItem = document.createElement("option");
 				optionItem.setAttribute("value", resp[i]["id"]);
 				optionItem.innerHTML =
-					resp[i]["tool_code"] + " - " + resp[i]["tool_name"];
+					resp[i]["tool_code"] + " - " + resp[i]["tool_name"] + " | Tersedia: " + resp[i]["available"];
 				selectItemChoose.append(optionItem);
 			}
 			divColItemChoose.append(selectItemChoose);

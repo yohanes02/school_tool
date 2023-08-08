@@ -26,20 +26,67 @@
 									</div>
 									<div class="col-lg-2">
 										<div class="form-floating mb-2">
-											<select name="toolUniversal" id="universalSelect" class="form-select" required>
-													<option value="0">Tidak</option>
-													<option value="1">Ya</option>
+											<select name="toolBorrowable" id="borrowableSelect" class="form-select" required>
+												<option value="0">Tidak</option>
+												<option value="1">Ya</option>
 											</select>
-											<label for="universalSelect">Barang Universal</label>
+											<label for="borrowableSelect">Bisa Dipinjam</label>
 										</div>
 									</div>
 									<div class="col-lg-2">
 										<div class="form-floating mb-2">
-											<select name="toolBorrowable" id="borrowableSelect" class="form-select" required>
-													<option value="0">Tidak</option>
-													<option value="1">Ya</option>
+											<select id="tool-universal" name="toolUniversal" id="universalSelect" class="form-select" required>
+												<option value="0">Tidak</option>
+												<option value="1">Ya</option>
 											</select>
-											<label for="borrowableSelect">Bisa Dipinjam</label>
+											<label for="universalSelect">Barang Universal</label>
+										</div>
+									</div>
+									<div id="major-row" class="pt-1 pb-1 mb-2" style="border: solid; margin-left: 10px; max-width: 98.4%; border-radius: 10px; border-width: 1px; border-color: #dee2e6; display:none">
+										<label for="" class="pb-2">Jurusan Diizinkan</label>
+										<div class="col-lg-12">
+											<div class="row">
+												<div class="col-lg">
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" name="majorcb[]" id="majorcb1" value="1" <?php if ($this->session->userdata('major') == 1) echo 'checked disabled'; ?>>
+														<label class="form-check-label" for="majorcb1">
+															TKRO
+														</label>
+													</div>
+												</div>
+												<div class="col-lg">
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" name="majorcb[]" id="majorcb2" value="2" <?php if ($this->session->userdata('major') == 2) echo 'checked disabled'; ?>>
+														<label class="form-check-label" for="majorcb2">
+															TBSM
+														</label>
+													</div>
+												</div>
+												<div class="col-lg">
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" name="majorcb[]" id="majorcb3" value="3" <?php if ($this->session->userdata('major') == 3) echo 'checked disabled'; ?>>
+														<label class="form-check-label" for="majorcb3">
+															TKJ
+														</label>
+													</div>
+												</div>
+												<div class="col-lg">
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" name="majorcb[]" id="majorcb4" value="4" <?php if ($this->session->userdata('major') == 4) echo 'checked disabled'; ?>>
+														<label class="form-check-label" for="majorcb4">
+															TELIND
+														</label>
+													</div>
+												</div>
+												<div class="col-lg">
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" name="majorcb[]" id="majorcb5" value="5" <?php if ($this->session->userdata('major') == 5) echo 'checked disabled'; ?>>
+														<label class="form-check-label" for="majorcb5">
+															PSPT
+														</label>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="col-lg-4">
@@ -106,7 +153,11 @@
 										<td><?= $dt['quantity'] ?></td>
 										<td><?= $dt['available'] ?></td>
 										<td><?= $dt['broken'] ?></td>
-										<td><?php if($dt['is_universal'] == 0) {echo "Tidak";} else {echo "Ya";} ?></td>
+										<td><?php if ($dt['is_universal'] == 0) {
+													echo "Tidak";
+												} else {
+													echo "Ya";
+												} ?></td>
 										<td>
 											<a href="<?= base_url() ?>toolman/detailItem/<?= $dt['id'] ?>">
 												<div class='d-grid'>

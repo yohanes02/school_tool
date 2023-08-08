@@ -16,7 +16,7 @@
 									<div class="col-lg-7">
 										<select name="itemborrowname0" id="itemborrowname0" class="form-select" required>
 											<?php foreach ($tool_data as $dt) : ?>
-												<option value="<?= $dt['id'] ?>"><?= $dt['tool_code'] ?> - <?= $dt['tool_name'] ?></option>
+												<option value="<?= $dt['id'] ?>"><?= $dt['tool_code'] ?> - <?= $dt['tool_name'] ?> | Tersedia: <?=$dt['available']?></option>
 											<?php endforeach; ?>
 										</select>
 

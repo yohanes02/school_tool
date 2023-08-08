@@ -124,7 +124,7 @@ class Teacher extends CI_Controller
 		$data['user'] = $userData;
 		$data['tool_data'] = $toolData;
 
-		$jsFile['page'] = 'student';
+		$jsFile['page'] = 'teacher';
 		$this->load->view("component/v_top");
 		$this->load->view("component/v_header", $data);
 		$this->load->view("component/v_sidebar");

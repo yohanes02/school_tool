@@ -12,6 +12,22 @@ var obj = {
 				$("#parentmonthsubmission").hide();
 			}
 		});
+		$("#tool-universal").change(function () {
+			var value = $("#tool-universal").val();
+			if (value == "1") {
+				$("#major-row").show();
+			} else {
+				$("#major-row").hide();
+			}
+		});
+		$("#universalSelect").change(function () {
+			var value = $("#universalSelect").val();
+			if (value == "1") {
+				$("#major-row").show();
+			} else {
+				$("#major-row").hide();
+			}
+		});
 	},
 };
 

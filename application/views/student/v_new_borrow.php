@@ -10,7 +10,7 @@
 							<div class="col-lg-10">
 								<select name="teachername" id="teacher-select" class="form-select" required>
 									<?php foreach ($teacher_data as $teacher) : ?>
-									<option value="<?= $teacher['id'] ?>"><?= $teacher['first_name'] ?> <?= $teacher['last_name'] ?></option>
+										<option value="<?= $teacher['id'] ?>"><?= $teacher['first_name'] ?> <?= $teacher['last_name'] ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -36,7 +36,7 @@
 									<div class="col-lg-7">
 										<select name="itemborrowname0" id="itemborrowname0" class="form-select" required>
 											<?php foreach ($tool_data as $dt) : ?>
-												<option value="<?= $dt['id'] ?>"><?= $dt['tool_code'] ?> - <?= $dt['tool_name'] ?></option>
+												<option value="<?= $dt['id'] ?>"><?= $dt['tool_code'] ?> - <?= $dt['tool_name'] ?> | Tersedia: <?= $dt['available'] ?></option>
 											<?php endforeach; ?>
 										</select>
 
@@ -59,6 +59,12 @@
 										Tambah Barang
 									</button>
 								</div>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputDate" class="col-sm-2 col-form-label">Estimasi Pengembalian</label>
+							<div class="col-sm-10">
+								<input type="datetime-local" class="form-control" name="esttimereturn">
 							</div>
 						</div>
 						<div class="row mb-3">
