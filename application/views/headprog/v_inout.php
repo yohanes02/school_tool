@@ -49,7 +49,7 @@
 											</td>
 											<td>
 												<div>
-													<a href="<?= base_url() ?>toolman/detailBorrow/<?= $dt['id'] ?>">
+													<a href="<?= base_url() ?>headprog/detailBorrow/<?= $dt['id'] ?>">
 														<div class="d-grid">
 															<button id="edit-<?= $dt['id'] ?>" class="btn btn-success" onclick=""> Detail Peminjaman </button>
 														</div>
@@ -99,7 +99,7 @@
 											</td>
 											<td>
 												<div>
-													<a href="<?= base_url() ?>toolman/detailBorrow/<?= $dt['id'] ?>">
+													<a href="<?= base_url() ?>headprog/detailBorrow/<?= $dt['id'] ?>">
 														<div class="d-grid">
 															<button id="edit-<?= $dt['id'] ?>" class="btn btn-success" onclick=""> Detail Peminjaman </button>
 														</div>

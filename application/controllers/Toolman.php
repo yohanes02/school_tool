@@ -174,10 +174,37 @@ class Toolman extends CI_Controller
 
 		$borrowingDataDetail = $this->Toolman_m->getHistoryBorrow($this->session->userdata('major'), $id, 5)->result_array();
 
+		$toolHistory = [];
+
+		$allToolHistory = $this->Core_m->getAll('tool_history_transaction')->result_array();
+		for ($i=0; $i < count($allToolHistory); $i++) { 
+			$toolBorrowed = explode(",", $allToolHistory[$i]['tool_id']);
+			$toolBorrowedQty = explode(",", $allToolHistory[$i]['quantity']);
+			for ($j=0; $j < count($toolBorrowed); $j++) { 
+				if($toolBorrowed[$j] == $id) {
+					$allToolHistory[$i]['qty_exact'] = $toolBorrowedQty[$j];
+					array_push($toolHistory, $allToolHistory[$i]);
+				}
+			}
+		}
+
+		for ($i=0; $i < count($toolHistory); $i++) {
+			if(empty($toolHistory[$i]['student_nisn'])) {
+				$teacherData = $this->Core_m->getById($toolHistory[$i]['teacher_id'], 'users')->row_array();
+				$toolHistory[$i]['borrower_name'] = $teacherData['first_name'] . " " . $teacherData['last_name']; 
+				$toolHistory[$i]['borrower_user_type'] = 'Guru'; 
+			} else {
+				$studentData = $this->Core_m->getByNisn($toolHistory[$i]['student_nisn'], 'student')->row_array();
+				$toolHistory[$i]['borrower_name'] = $studentData['first_name'] . " " . $studentData['last_name']; 
+				$toolHistory[$i]['borrower_user_type'] = 'Siswa'; 
+			}
+		}
+
 		$data['user'] = $userData;
 		$data['toolDetail'] = $toolDataDetail;
 		$data['studentData'] = $studentDataDetail;
 		$data['borrowingData'] = $borrowingDataDetail;
+		$data['toolHistory'] = $toolHistory;
 
 		$jsFile['page'] = 'toolman';
 		$this->load->view("component/v_top");

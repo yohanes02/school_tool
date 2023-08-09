@@ -116,6 +116,54 @@
 						</div>
 					</div>
 				</form>
+				<div class="card">
+					<div class="card-body table-border-style">
+						<div class="card-title">History Peminjaman Barang Ini</div>
+						<h5 class="pb-2">Barang ini sudah dipinjam sebanyak <?=count($toolHistory)?> kali</h5>
+						<div class="table-responsive">
+							<table class="table datatable table-striped">
+								<thead>
+									<tr>
+										<th>No</th>
+										<th>Peminjam</th>
+										<th>Tipe Peminjam</th>
+										<th>Qty</th>
+										<th>Tgl Peminjaman</th>
+										<th>Tgl Pengembalian</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php $no = 1;
+									foreach ($toolHistory as $dt) : ?>
+										<tr>
+											<td><?= $no ?></td>
+											<td><?= $dt['borrower_name'] ?></td>
+											<td><?= $dt['borrower_user_type'] ?></td>
+											<td><?= $dt['qty_exact'] ?></td>
+											<td><?= $dt['time_borrow'] ?></td>
+											<td><?= $dt['time_return'] ?></td>
+											<td>
+												<?php if ($dt['borrow_accepted'] == "0" && $dt['status'] == "0") : ?>
+													Menunggu Konfirmasi
+												<?php elseif ($dt['borrow_accepted'] == "1" && $dt['status'] == "0") : ?>
+													Peminjaman Disetujui
+												<?php elseif ($dt['borrow_accepted'] == "2" && $dt['status'] == "0") : ?>
+													Peminjaman Ditolak
+												<?php elseif ($dt['status'] == "1") : ?>
+													Sedang Dipinjam
+												<?php elseif ($dt['status'] == "2") : ?>
+													Selesai Dipinjam
+												<?php endif; ?>
+											</td>
+										</tr>
+									<?php $no++;
+									endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
