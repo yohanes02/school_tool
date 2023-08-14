@@ -139,12 +139,20 @@ class Toolman extends CI_Controller
 	public function editItem($id)
 	{
 		$post = $this->input->post();
+		$qtyItem = $post['quantity'];
+
+		$uniqueIds = [];
+		for ($i=0; $i < $qtyItem; $i++) { 
+			array_push($uniqueIds, $post['uniqueid'.$i]);
+		}
+		$txtUniqueIds = implode(',', $uniqueIds);
 
 		$ins = array(
 			'tool_name' => $post['toolname'],
-			'quantity' => $post['quantity'],
+			'quantity' => $qtyItem,
 			'available' => $post['available'],
 			'broken' => $post['broken'],
+			'unique_ids' => $txtUniqueIds,
 			'information' => $post['information'],
 			'is_universal' => $post['toolUniversal'],
 			'is_borrowable' => $post['toolBorrowable'],
@@ -170,6 +178,7 @@ class Toolman extends CI_Controller
 		$userData['full_major'] = $majorData['full_major'];
 
 		$toolDataDetail = $this->Core_m->getById($id, 'tool')->row_array();
+		$toolDataDetail['unique_ids_arr'] = explode(",", $toolDataDetail['unique_ids']);
 		$studentDataDetail = $this->Toolman_m->getStudentByMajor($this->session->userdata('major'))->result_array();
 
 		$borrowingDataDetail = $this->Toolman_m->getHistoryBorrow($this->session->userdata('major'), $id, 5)->result_array();
@@ -177,26 +186,26 @@ class Toolman extends CI_Controller
 		$toolHistory = [];
 
 		$allToolHistory = $this->Core_m->getAll('tool_history_transaction')->result_array();
-		for ($i=0; $i < count($allToolHistory); $i++) { 
+		for ($i = 0; $i < count($allToolHistory); $i++) {
 			$toolBorrowed = explode(",", $allToolHistory[$i]['tool_id']);
 			$toolBorrowedQty = explode(",", $allToolHistory[$i]['quantity']);
-			for ($j=0; $j < count($toolBorrowed); $j++) { 
-				if($toolBorrowed[$j] == $id) {
+			for ($j = 0; $j < count($toolBorrowed); $j++) {
+				if ($toolBorrowed[$j] == $id) {
 					$allToolHistory[$i]['qty_exact'] = $toolBorrowedQty[$j];
 					array_push($toolHistory, $allToolHistory[$i]);
 				}
 			}
 		}
 
-		for ($i=0; $i < count($toolHistory); $i++) {
-			if(empty($toolHistory[$i]['student_nisn'])) {
+		for ($i = 0; $i < count($toolHistory); $i++) {
+			if (empty($toolHistory[$i]['student_nisn'])) {
 				$teacherData = $this->Core_m->getById($toolHistory[$i]['teacher_id'], 'users')->row_array();
-				$toolHistory[$i]['borrower_name'] = $teacherData['first_name'] . " " . $teacherData['last_name']; 
-				$toolHistory[$i]['borrower_user_type'] = 'Guru'; 
+				$toolHistory[$i]['borrower_name'] = $teacherData['first_name'] . " " . $teacherData['last_name'];
+				$toolHistory[$i]['borrower_user_type'] = 'Guru';
 			} else {
 				$studentData = $this->Core_m->getByNisn($toolHistory[$i]['student_nisn'], 'student')->row_array();
-				$toolHistory[$i]['borrower_name'] = $studentData['first_name'] . " " . $studentData['last_name']; 
-				$toolHistory[$i]['borrower_user_type'] = 'Siswa'; 
+				$toolHistory[$i]['borrower_name'] = $studentData['first_name'] . " " . $studentData['last_name'];
+				$toolHistory[$i]['borrower_user_type'] = 'Siswa';
 			}
 		}
 
@@ -286,8 +295,17 @@ class Toolman extends CI_Controller
 
 		for ($i = 0; $i < count($tools); $i++) {
 			$toolData = $this->Core_m->getById($tools[$i], 'tool')->row_array();
+			if ($borrowDataDetail['unique_ids'] == NULL) {
+				$toolData['unique_ids'] = [];
+			} else {
+				$uniqueIdsPerItemGroup = explode('-', $borrowDataDetail['unique_ids']);
+				$toolData['unique_ids'] =  explode(',', $uniqueIdsPerItemGroup[$i]);
+			};
 			array_push($borrowDataDetail['toolDatas'], $toolData);
 		}
+
+		// echo "<pre>" . print_r($borrowDataDetail, true) . "</pre>";
+		// die;
 
 		$data['user'] = $userData;
 		$data['borrowData'] = $borrowDataDetail;
@@ -386,24 +404,43 @@ class Toolman extends CI_Controller
 	{
 		$post = $this->input->post();
 
-		// print_r($post);
-		// die;
-
 		if ($post['statusborrow'] == "1") {
-			$ins = array(
-				"status" => $post['statusborrow'],
-				"information_toolman" => $post['infoborrowtoolman'],
-				"time_borrow" => date('Y-m-d H:i:s')
-			);
-
-			$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
-			redirect('toolman/detailBorrow/' . $id);
-		} else {
+			$uniqueIds = [];
 			$dataBorrow = $this->Core_m->getById($id, 'tool_history_transaction')->row_array();
 			$toolIds = explode(",", $dataBorrow['tool_id']);
 			$quantityItems = explode(",", $dataBorrow['quantity']);
 
 			for ($i = 0; $i < count($toolIds); $i++) {
+				$uniqueItemIds = [];
+				for ($j = 0; $j < (int) $quantityItems[$i]; $j++) {
+					$dataPost = $post['uniqueid' . $i . '_' . $j];
+					array_push($uniqueItemIds, $dataPost);
+				}
+				array_push($uniqueIds, implode(',', $uniqueItemIds));
+			}
+
+			$ins = array(
+				"status" => $post['statusborrow'],
+				"information_toolman" => $post['infoborrowtoolman'],
+				"time_borrow" => date('Y-m-d H:i:s'),
+				"unique_ids" => implode('-', $uniqueIds),
+			);
+
+			$this->Core_m->updateData($id, $ins, 'tool_history_transaction');
+			redirect('toolman/detailBorrow/' . $id);
+		} else {
+			$uniqueIds = [];
+			$dataBorrow = $this->Core_m->getById($id, 'tool_history_transaction')->row_array();
+			$toolIds = explode(",", $dataBorrow['tool_id']);
+			$quantityItems = explode(",", $dataBorrow['quantity']);
+
+			for ($i = 0; $i < count($toolIds); $i++) {
+				$uniqueItemIds = [];
+				for ($j = 0; $j < (int) $quantityItems[$i]; $j++) {
+					$dataPost = $post['uniqueid' . $i . '_' . $j];
+					array_push($uniqueItemIds, $dataPost);
+				}
+				array_push($uniqueIds, implode(',', $uniqueItemIds));
 				$toolData = $this->Core_m->getById($toolIds[$i], 'tool')->row_array();
 				$itemLeftCurrent = $toolData['available'] + $quantityItems[$i];
 				$this->Core_m->updateData($toolIds[$i], array('available' => $itemLeftCurrent), 'tool');
@@ -412,7 +449,8 @@ class Toolman extends CI_Controller
 			$ins = array(
 				"status" => $post['statusborrow'],
 				"information_toolman" => $post['infoborrowtoolman'],
-				"time_return" => date('Y-m-d H:i:s')
+				"time_return" => date('Y-m-d H:i:s'),
+				"unique_ids" => implode('-', $uniqueIds),
 			);
 
 			$this->Core_m->updateData($id, $ins, 'tool_history_transaction');

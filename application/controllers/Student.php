@@ -94,6 +94,8 @@ class Student extends CI_Controller
 			$toolData = $this->Core_m->getById($tools[$i], 'tool')->row_array();
 			array_push($borrowDataDetail['toolDatas'], $toolData);
 		}
+		
+		// echo "<pre>".print_r($borrowDataDetail, true)."</pre>";die;
 
 		$data['user'] = $userData;
 		$data['borrowData'] = $borrowDataDetail;
@@ -114,9 +116,11 @@ class Student extends CI_Controller
 
 		$toolData = $this->Student_m->getToolDataStudent($this->session->userdata('major'))->result_array();
 		$teacherData = $this->Student_m->getTeacherData($this->session->userdata('major'))->result_array();
+		$assignmentData = $this->Student_m->getAssignmentData($this->session->userdata('major'))->result_array();
 
 		$data['user'] = $userData;
 		$data['teacher_data'] = $teacherData;
+		$data['assignment_data'] = $assignmentData;
 		$data['tool_data'] = $toolData;
 
 		$jsFile['page'] = 'student';
@@ -166,7 +170,9 @@ class Student extends CI_Controller
 			'est_time_return' => $estTimeReturnDate,
 			// 'image_borrow' => $post['available'],
 			'information_student' => $post['infoborrow'],
-			'teacher_id' => $post['teachername'],
+			'borrow_accepted' => 1,
+			'teacher_id' => explode('_',$post['assignmentname'])[1],
+			'assignment_id' => explode('_',$post['assignmentname'])[0],
 		);
 
 		$this->Core_m->insertData($ins, 'tool_history_transaction');

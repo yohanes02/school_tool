@@ -119,9 +119,9 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link " href="<?= base_url() ?>teacher/confirmation">
+				<a class="nav-link " href="<?= base_url() ?>teacher/task">
 					<i class="bi bi-grid"></i>
-					<span>Peminjaman Siswa</span>
+					<span>Tugas Siswa</span>
 				</a>
 			</li>
 			<li class="nav-item">

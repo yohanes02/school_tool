@@ -7,6 +7,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property session session
  * @property Toolman_m Toolman_m
  * @property Student_m Student_m
+ * @property Headprog_m Headprog_m
  * @property Core_m Core_m
  * @property db db
  */
@@ -16,7 +17,7 @@ class Headdiv extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model(["Core_m", "Toolman_m", "Student_m"]);
+		$this->load->model(["Core_m", "Toolman_m", "Student_m", "Headprog_m"]);
 		if ($this->session->userdata('utype') != 3) {
 			redirect('auth');
 		}
@@ -201,7 +202,7 @@ class Headdiv extends CI_Controller
 		$userData['abbv_major'] = $majorData['abbv_major'];
 		$userData['full_major'] = $majorData['full_major'];
 
-		$borrowDataDetail = $this->Student_m->getDetailBorrow($id)->row_array();
+		$borrowDataDetail = $this->Headprog_m->getDetailBorrow($id)->row_array();
 		$borrowDataDetail['toolDatas'] = [];
 		$tools = explode(",", $borrowDataDetail['tool_id']);
 
@@ -215,7 +216,7 @@ class Headdiv extends CI_Controller
 		$this->load->view("component/v_top");
 		$this->load->view("component/v_header", $data);
 		$this->load->view("component/v_sidebar");
-		$this->load->view("student/v_borrow_detail", $data);
+		$this->load->view("headdiv/v_borrow_detail", $data);
 		$this->load->view("component/v_bottom");
 	}
 

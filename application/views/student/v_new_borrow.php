@@ -6,11 +6,11 @@
 				<div>
 					<form action="<?= base_url() ?>student/insertBorrow" method="post">
 						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Nama Guru</label>
+							<label for="" class="col-lg-2 col-form-label">Nama Tugas</label>
 							<div class="col-lg-10">
-								<select name="teachername" id="teacher-select" class="form-select" required>
-									<?php foreach ($teacher_data as $teacher) : ?>
-										<option value="<?= $teacher['id'] ?>"><?= $teacher['first_name'] ?> <?= $teacher['last_name'] ?></option>
+								<select name="assignmentname" id="assignment-select" class="form-select" required>
+									<?php foreach ($assignment_data as $assignment) : ?>
+										<option value="<?= $assignment['id'] ?>_<?= $assignment['teacher_id'] ?>"><?= $assignment['title'] ?> - <?= $assignment['first_name'] ?> <?= $assignment['last_name'] ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>

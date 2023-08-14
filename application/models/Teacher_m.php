@@ -25,4 +25,14 @@ class Teacher_m extends CI_Model
 		$query = "SELECT tht.*, u.first_name as t_first_name, u.last_name as t_last_name, t.tool_code, t.tool_name, t.available, s.nisn, s.first_name, s.last_name, s.grade from tool_history_transaction tht left join student s on s.nisn = tht.student_nisn left join tool t on t.id = tht.tool_id left join users u on u.id = tht.teacher_id where tht.id = $borrow_id";
 		return $this->db->query($query);
 	}
+
+	public function getTaskData($teacher_id) {
+		$query = "select a.*, s.first_name, s.last_name from assignment a left join student s on s.nisn = a.student_nisn where a.teacher_id = $teacher_id";
+		return $this->db->query($query);
+	}
+
+	public function getStudentByMajor($major_id) {
+		$this->db->where(['major'=>$major_id]);
+		return $this->db->get('student');
+	}
 }

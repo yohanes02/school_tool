@@ -62,6 +62,83 @@ class Teacher extends CI_Controller
 		$this->load->view("component/v_bottom");
 	}
 
+	public function task() {
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
+		$userData['user_type_name'] = 'Guru';
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+
+		$taskDataDetail = $this->Teacher_m->getTaskData($userData['id'])->result_array();
+		
+		$data['user'] = $userData;
+		$data['taskData'] = $taskDataDetail;
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("teacher/v_task", $data);
+		$this->load->view("component/v_bottom");
+	}
+
+	public function taskDetail($id)
+	{
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
+		$userData['user_type_name'] = 'Guru';
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+
+		$allStudentWithMajor = $this->Teacher_m->getStudentByMajor($userData['major'])->result_array();
+		$taskDetail = $this->Core_m->getById($id, 'assignment')->row_array();
+
+		$data['user'] = $userData;
+		$data['taskDetail'] = $taskDetail;
+		$data['allStudent'] = $allStudentWithMajor;
+
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("teacher/v_task_detail", $data);
+		$this->load->view("component/v_bottom");
+	}
+
+	public function newTask()
+	{
+		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
+		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();
+		$userData['user_type_name'] = 'Guru';
+		$userData['abbv_major'] = $majorData['abbv_major'];
+		$userData['full_major'] = $majorData['full_major'];
+
+		$allStudentWithMajor = $this->Teacher_m->getStudentByMajor($userData['major'])->result_array();
+		
+		$data['user'] = $userData;
+		$data['allStudent'] = $allStudentWithMajor;
+
+		$jsFile['page'] = 'teacher';
+		$this->load->view("component/v_top");
+		$this->load->view("component/v_header", $data);
+		$this->load->view("component/v_sidebar");
+		$this->load->view("teacher/v_new_task", $data);
+		$this->load->view("component/v_bottom", $jsFile);
+	}
+
+	public function submitTask() {
+		$post = $this->input->post();
+
+		$ins = array(
+			"title" => $post['titletask'],
+			"description" => $post['desctask'],
+			"teacher_id" => $this->session->userdata('id'),
+			"student_nisn" => $post['selectstudent'],
+			"status" => 1,
+		);
+
+		$this->Core_m->insertData($ins, 'assignment');
+		redirect('student/task');
+	}
+
+
 	public function confirmation() {
 		$userData = $this->Core_m->getById($this->session->userdata('id'), 'users')->row_array();
 		$majorData = $this->Core_m->getById($userData['major'], 'school_major')->row_array();

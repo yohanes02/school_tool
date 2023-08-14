@@ -206,7 +206,7 @@ class Headprog extends CI_Controller
 		$this->load->view("component/v_top");
 		$this->load->view("component/v_header", $data);
 		$this->load->view("component/v_sidebar");
-		$this->load->view("student/v_borrow_detail", $data);
+		$this->load->view("headprog/v_borrow_detail", $data);
 		$this->load->view("component/v_bottom");
 	}
 

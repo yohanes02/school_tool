@@ -13,24 +13,33 @@
 									<input class="form-control" type="text" value="<?=$borrowData['code_borrow']?>" disabled>
 							</div>
 						</div>
-						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Nama Tugas</label>
-							<div class="col-lg-10">
-								<input class="form-control" type="text" value="<?= $borrowData['title'] ?> - <?= $borrowData['t_first_name'] ?> <?= $borrowData['t_last_name'] ?>" disabled>
+						<?php if (empty($borrowData['student_nisn'])) : ?>
+							<div class="row mb-3">
+								<label for="" class="col-lg-2 col-form-label">Nama Guru</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text" value="<?= $borrowData['t_first_name'] ?> <?= $borrowData['t_last_name'] ?>" disabled>
+								</div>
 							</div>
-						</div>
-						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Tipe Peminjam</label>
-							<div class="col-lg-10">
-								<?php if ($borrowData['borrower_type'] == "1") : ?>
-									<input class="form-control" type="text" value="Individual" disabled>
-								<?php elseif ($borrowData['borrow_accepted'] == "2") : ?>
-									<input class="form-control" type="text" value="Kelompok" disabled>
-								<?php elseif ($borrowData['borrow_accepted'] == "3") : ?>
-									<input class="form-control" type="text" value="Kelas" disabled>
-								<?php endif; ?>
+						<?php else : ?>
+							<div class="row mb-3">
+								<label for="" class="col-lg-2 col-form-label">Nama Tugas</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text" value="<?= $borrowData['title'] ?> - <?= $borrowData['t_first_name'] ?> <?= $borrowData['t_last_name'] ?>" disabled>
+								</div>
 							</div>
-						</div>
+							<div class="row mb-3">
+								<label for="" class="col-lg-2 col-form-label">Tipe Peminjam</label>
+								<div class="col-lg-10">
+									<?php if ($borrowData['borrower_type'] == "1") : ?>
+										<input class="form-control" type="text" value="Individual" disabled>
+									<?php elseif ($borrowData['borrow_accepted'] == "2") : ?>
+										<input class="form-control" type="text" value="Kelompok" disabled>
+									<?php elseif ($borrowData['borrow_accepted'] == "3") : ?>
+										<input class="form-control" type="text" value="Kelas" disabled>
+									<?php endif; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 						<div class="col-12 mb-3">
 							<label for="" class="form-label">Barang Dipinjam</label>
 							<div class="row">

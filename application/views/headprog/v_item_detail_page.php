@@ -120,7 +120,7 @@
 						</div>
 					</div>
 				</form>
-				<div class="card">
+				<div class="card mt-3">
 					<div class="card-body table-border-style">
 						<div class="card-title">History Peminjaman Barang Ini</div>
 						<h5 class="pb-2">Barang ini sudah dipinjam sebanyak <?=count($toolHistory)?> kali</h5>

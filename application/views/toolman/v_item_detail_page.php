@@ -83,25 +83,32 @@
 							</div>
 						</div>
 						<div class="col-lg-4">
-							<div class="mb-3">
+							<div class="mb-2">
 								<label for="floatingInput">Jumlah Barang</label>
 								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="quantityitem" name="quantity" value="<?= $toolDetail['quantity'] ?>">
 							</div>
 						</div>
 						<div class="col-lg-4">
-							<div class="mb-3">
+							<div class="mb-2">
 								<label for="floatingInput">Barang Available</label>
 								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="availableitem" name="available" value="<?= $toolDetail['available'] ?>">
 							</div>
 						</div>
 						<div class="col-lg-4">
-							<div class="mb-3">
+							<div class="mb-2">
 								<label for="floatingInput">Barang Rusak</label>
 								<input type="number" class="form-control form-control-lg" id="floatingInput" placeholder="brokenitem" name="broken" value="<?= $toolDetail['broken'] ?>">
 							</div>
 						</div>
+						<div class="row">
+							<?php for ($i=0; $i < (int) $toolDetail['quantity']; $i++) : ?> 
+								<div class="col-lg-2">
+									<input type="number" name="uniqueid<?= $i ?>" class="form-control" placeholder="Unique Code Item <?=$i?>" value="<?=$toolDetail['unique_ids_arr'][$i]?>">
+								</div>
+							<?php endfor; ?>
+						</div>
 						<div class="col-lg-12">
-							<div class="mb-3">
+							<div class="mb-3 mt-3">
 								<label for="">Keterangan</label>
 								<textarea type="text" class="form-control" placeholder="" name="information" style="height: 100px;"><?php echo $toolDetail['information'] ?></textarea>
 							</div>
@@ -116,7 +123,7 @@
 						</div>
 					</div>
 				</form>
-				<div class="card">
+				<div class="card mt-3">
 					<div class="card-body table-border-style">
 						<div class="card-title">History Peminjaman Barang Ini</div>
 						<h5 class="pb-2">Barang ini sudah dipinjam sebanyak <?=count($toolHistory)?> kali</h5>

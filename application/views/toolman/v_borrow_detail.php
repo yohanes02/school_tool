@@ -13,12 +13,21 @@
 								<input class="form-control" name="codeborrow" type="text" value="<?= $borrowData['code_borrow'] ?>" disabled>
 							</div>
 						</div>
-						<div class="row mb-3">
-							<label for="" class="col-lg-2 col-form-label">Nama Guru</label>
-							<div class="col-lg-10">
-								<input class="form-control" type="text" value="<?= $borrowData['t_first_name'] ?> <?= $borrowData['t_last_name'] ?> - <?= $borrowData['major_name'] ?>" disabled>
+						<?php if (empty($borrowData['student_nisn'])) : ?>
+							<div class="row mb-3">
+								<label for="" class="col-lg-2 col-form-label">Nama Guru</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text" value="<?= $borrowData['t_first_name'] ?> <?= $borrowData['t_last_name'] ?> - <?= $borrowData['major_name'] ?>" disabled>
+								</div>
 							</div>
-						</div>
+						<?php else : ?>
+							<div class="row mb-3">
+								<label for="" class="col-lg-2 col-form-label">Nama Tugas</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text" value="<?= $borrowData['title'] ?> - <?= $borrowData['t_first_name'] ?> <?= $borrowData['t_last_name'] ?> - <?= $borrowData['major_name'] ?>" disabled>
+								</div>
+							</div>
+						<?php endif; ?>
 						<?php if (empty($borrowData['student_nisn']) == false) : ?>
 							<div class="row mb-3">
 								<label for="" class="col-lg-2 col-form-label">Nama Peminjam</label>
@@ -60,6 +69,20 @@
 										<div class="col-lg-2">
 											<input class="form-control" type="number" name="itemborrowcount<?= $i ?>" value="<?= $quantity[$i] ?>" readonly>
 										</div>
+									</div>
+									<div class="row mt-2">
+										<div class="col-lg-1"></div>
+										<?php for ($j = 0; $j < (int) $quantity[$i]; $j++) : ?>
+											<?php
+												$valueUnique = "";
+												if($borrowData['toolDatas'][$i]['unique_ids'] != []) {
+													$valueUnique = $borrowData['toolDatas'][$i]['unique_ids'][$j];
+												}
+											?>
+											<div class="col-lg-2">
+												<input type="number" class="form-control" placeholder="Unique Code Item <?= $j+1 ?>" name="uniqueid<?= $i ?>_<?= $j ?>" value=<?=$valueUnique?> required>
+											</div>
+										<?php endfor; ?>
 									</div>
 								</div>
 							<?php endfor; ?>
