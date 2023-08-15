@@ -107,6 +107,22 @@
 											<label for="floatingInput">Broken</label>
 										</div>
 									</div>
+									<input type="hidden" class="form-control" value="0" name="itemnewuniquecount" id="itemnewuniquecount">
+									<div class="row" id="parent-item-uniques">
+										<div class="col-lg-2 mt-1">
+											<input type="text" class="form-control" id="itemunique0" name="itemunique0" placeholder="Unique ID" required>
+										</div>
+									</div>
+									<div class="row">
+										<div class="row mt-3">
+											<div class="col-lg-3 mb-3">
+												<button class="btn btn-info" type="button" onclick="generateInputUniqueId()">
+													<i class="bi bi-plus-circle-dotted"></i>
+													Tambah Unique ID
+												</button>
+											</div>
+										</div>
+									</div>
 									<div class="col-lg-12">
 										<div class="form-floating mb-2">
 											<textarea type="text" class="form-control" placeholder="groupname" name="information" style="height: 100px;"></textarea>
@@ -118,7 +134,7 @@
 							<div class="col-lg-9"></div>
 							<div class="col-lg-3">
 								<div class="d-grid">
-									<button class="btn btn-lg btn-primary" type="submit">Save Group</button>
+									<button class="btn btn-lg btn-primary" type="submit">Simpan Barang</button>
 								</div>
 							</div>
 						</div>

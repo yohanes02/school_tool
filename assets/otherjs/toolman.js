@@ -63,6 +63,33 @@ function getSelectedItemExisting(idx) {
 	);
 }
 
+function generateInputUniqueId() {
+	var increment;
+	if ($("#itemnewuniquecount").val() == "") {
+		increment = 0;
+		$("#itemnewuniquecount").val(0);
+	} else {
+		increment = $("#itemnewuniquecount").val();
+		increment++;
+		$("#itemnewuniquecount").val(increment);
+	}
+	var parentElement = document.getElementById("parent-item-uniques");
+
+	var divCol = document.createElement('div');
+	divCol.classList.add('col-lg-2', 'mt-1');
+
+	var inputForm = document.createElement('input');
+	inputForm.classList.add('form-control');
+	inputForm.setAttribute('id', 'itemunique'+increment);
+	inputForm.setAttribute('name', 'itemunique'+increment);
+	inputForm.setAttribute('type', 'text');
+	inputForm.setAttribute('placeholder', 'Unique ID');
+	inputForm.setAttribute('required', 'true');
+
+	divCol.append(inputForm);
+	parentElement.append(divCol);
+}
+
 function generateInputBorrow() {
 	$.ajax({
 		type: "post",
@@ -150,9 +177,9 @@ function deleteElementBorrow(id) {
 }
 
 function generateInputItem(fromRevision) {
-	var url = 'getToolDataAndToolGroup';
-	if(fromRevision) {
-		url = '../getToolDataAndToolGroup';
+	var url = "getToolDataAndToolGroup";
+	if (fromRevision) {
+		url = "../getToolDataAndToolGroup";
 	}
 	$.ajax({
 		type: "post",
@@ -171,11 +198,11 @@ function generateInputItem(fromRevision) {
 			}
 			var elementIncrement = document.getElementById("itemnewcount").value;
 			var parentElement = document.getElementById("parent-list-item");
-		
+
 			var divRowItem = document.createElement("div");
 			divRowItem.classList.add("row");
 			divRowItem.setAttribute("id", "itemnew" + increment);
-		
+
 			var divColItemNumber = document.createElement("div");
 			divColItemNumber.classList.add("col-lg-1");
 			var inputItemNumber = document.createElement("input");
@@ -186,7 +213,7 @@ function generateInputItem(fromRevision) {
 			inputItemNumber.setAttribute("disabled", true);
 			inputItemNumber.innerHTML = "-";
 			divColItemNumber.append(inputItemNumber);
-		
+
 			var divColSwitch = document.createElement("div");
 			divColSwitch.classList.add("col-lg-11");
 			var divFormSwitch = document.createElement("div");
@@ -207,7 +234,7 @@ function generateInputItem(fromRevision) {
 			divFormSwitch.append(inputSwitch);
 			divFormSwitch.append(inputSwitchLabel);
 			divColSwitch.append(divFormSwitch);
-		
+
 			var divColToolGroup = document.createElement("div");
 			divColToolGroup.classList.add("offset-1", "col-lg-10");
 			divColToolGroup.setAttribute("id", "itemgroup" + increment);
@@ -216,10 +243,10 @@ function generateInputItem(fromRevision) {
 			var selectToolGroup = document.createElement("select");
 			selectToolGroup.classList.add("form-select");
 			selectToolGroup.setAttribute("name", "itemgroup" + increment);
-			for (let i = 0; i < resp['tool_group'].length; i++) {
+			for (let i = 0; i < resp["tool_group"].length; i++) {
 				var optionToolGroup = document.createElement("option");
-				optionToolGroup.setAttribute("value", resp['tool_group'][i]["id"]);
-				optionToolGroup.innerHTML = resp['tool_group'][i]["tool_group"];
+				optionToolGroup.setAttribute("value", resp["tool_group"][i]["id"]);
+				optionToolGroup.innerHTML = resp["tool_group"][i]["tool_group"];
 				selectToolGroup.append(optionToolGroup);
 			}
 			var labelToolGroup = document.createElement("label");
@@ -237,11 +264,14 @@ function generateInputItem(fromRevision) {
 			var selectToolItem = document.createElement("select");
 			selectToolItem.classList.add("form-select");
 			selectToolItem.setAttribute("name", "itemexisting" + increment);
-			selectToolItem.setAttribute("onchange", "getSelectedItemExisting("+increment+")")
-			for (let i = 0; i < resp['tool_data'].length; i++) {
+			selectToolItem.setAttribute(
+				"onchange",
+				"getSelectedItemExisting(" + increment + ")"
+			);
+			for (let i = 0; i < resp["tool_data"].length; i++) {
 				var optionToolItem = document.createElement("option");
-				optionToolItem.setAttribute("value", resp['tool_data'][i]["id"]);
-				optionToolItem.innerHTML = resp['tool_data'][i]["tool_name"];
+				optionToolItem.setAttribute("value", resp["tool_data"][i]["id"]);
+				optionToolItem.innerHTML = resp["tool_data"][i]["tool_name"];
 				selectToolItem.append(optionToolItem);
 			}
 			var labelToolItem = document.createElement("label");
@@ -250,7 +280,6 @@ function generateInputItem(fromRevision) {
 			divFloatToolItem.append(labelToolItem);
 			divColToolItem.append(divFloatToolItem);
 
-		
 			var divColItemName = document.createElement("div");
 			divColItemName.classList.add("offset-1", "col-lg-5");
 			var inputItemName = document.createElement("input");
@@ -261,7 +290,7 @@ function generateInputItem(fromRevision) {
 			inputItemName.setAttribute("placeholder", "Nama Barang");
 			inputItemName.setAttribute("required", true);
 			divColItemName.append(inputItemName);
-		
+
 			var divColItemQty = document.createElement("div");
 			divColItemQty.classList.add("col-lg-1");
 			var inputItemQty = document.createElement("input");
@@ -270,10 +299,13 @@ function generateInputItem(fromRevision) {
 			inputItemQty.setAttribute("id", "itemqty" + increment);
 			inputItemQty.setAttribute("type", "number");
 			inputItemQty.setAttribute("placeholder", "Qty");
-			inputItemQty.setAttribute("onchange", "generateTotal(" + increment + ")");
+			inputItemQty.setAttribute(
+				"onchange",
+				"generateTotal(" + increment + ")"
+			);
 			inputItemQty.setAttribute("required", true);
 			divColItemQty.append(inputItemQty);
-		
+
 			var divColItemSatuan = document.createElement("div");
 			divColItemSatuan.classList.add("col-lg-2");
 			var inputItemSatuan = document.createElement("input");
@@ -282,10 +314,13 @@ function generateInputItem(fromRevision) {
 			inputItemSatuan.setAttribute("id", "itemsatuan" + increment);
 			inputItemSatuan.setAttribute("type", "number");
 			inputItemSatuan.setAttribute("placeholder", "Harga Satuan");
-			inputItemSatuan.setAttribute("onchange", "generateTotal(" + increment + ")");
+			inputItemSatuan.setAttribute(
+				"onchange",
+				"generateTotal(" + increment + ")"
+			);
 			inputItemSatuan.setAttribute("required", true);
 			divColItemSatuan.append(inputItemSatuan);
-		
+
 			var divColItemTotal = document.createElement("div");
 			divColItemTotal.classList.add("col-lg-2");
 			var inputItemTotal = document.createElement("input");
@@ -297,7 +332,7 @@ function generateInputItem(fromRevision) {
 			inputItemTotal.setAttribute("placeholder", "Total Harga");
 			inputItemTotal.setAttribute("readonly", true);
 			divColItemTotal.append(inputItemTotal);
-		
+
 			var divColDelete = document.createElement("div");
 			divColDelete.classList.add("col-lg-1");
 			var buttonDelete = document.createElement("button");
@@ -308,11 +343,11 @@ function generateInputItem(fromRevision) {
 			);
 			buttonDelete.innerHTML = "Hapus";
 			divColDelete.append(buttonDelete);
-		
+
 			var labelImage = document.createElement("label");
 			labelImage.classList.add("offset-1", "mt-3", "mb-1");
 			labelImage.innerHTML = "Foto Barang";
-		
+
 			var divColItemImage = document.createElement("div");
 			divColItemImage.classList.add("col-lg-10", "offset-1");
 			var inputItemImage = document.createElement("input");
@@ -322,7 +357,7 @@ function generateInputItem(fromRevision) {
 			inputItemImage.setAttribute("type", "file");
 			inputItemImage.setAttribute("name", "itemimage" + increment);
 			divColItemImage.append(inputItemImage);
-		
+
 			var divColItemSpecification = document.createElement("div");
 			divColItemSpecification.classList.add(
 				"col-lg-10",
@@ -344,7 +379,7 @@ function generateInputItem(fromRevision) {
 			textareaItemSpecification.setAttribute("cols", "30");
 			textareaItemSpecification.setAttribute("rows", "3");
 			divColItemSpecification.append(textareaItemSpecification);
-		
+
 			divRowItem.append(divColItemNumber);
 			divRowItem.append(divColSwitch);
 			divRowItem.append(divColToolGroup);
@@ -357,7 +392,7 @@ function generateInputItem(fromRevision) {
 			divRowItem.append(labelImage);
 			divRowItem.append(divColItemImage);
 			divRowItem.append(divColItemSpecification);
-		
+
 			parentElement.append(divRowItem);
 			rebuildNumber();
 		},

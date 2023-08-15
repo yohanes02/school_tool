@@ -112,6 +112,13 @@ class Toolman extends CI_Controller
 		array_push($post['majorcb'], $toolMajor);
 		$allowedMajor = implode(",", $post['majorcb']);
 
+		$uniqueIdsArr = [];
+		for ($i=0; $i <= (int) $post['itemnewuniquecount']; $i++) { 
+			array_push($uniqueIdsArr, $post['itemunique'.$i]);
+		}
+
+		$uniqueIds = implode(',', $uniqueIdsArr);
+
 
 		$ins = array(
 			'tool_code' => $toolCode,
@@ -120,6 +127,7 @@ class Toolman extends CI_Controller
 			'quantity' => $post['quantity'],
 			'available' => $post['available'],
 			'broken' => $post['broken'],
+			'unique_ids' => $uniqueIds,
 			'information' => $post['information'],
 			'is_universal' => $post['toolUniversal'],
 			'is_borrowable' => $post['toolBorrowable'],
